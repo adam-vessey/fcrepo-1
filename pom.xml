@@ -262,7 +262,16 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
           </exclusion>
+          <exclusion>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+          </exclusion>
         </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>javax.transaction</groupId>
+        <artifactId>jta</artifactId>
+        <version>1.1</version>
       </dependency>
       <dependency>
         <groupId>commons-beanutils</groupId>
@@ -508,7 +517,18 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
-
+    
+    <repository>
+      <id>jboss</id>
+      <name>JBoss Maven Repo</name>
+      <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
   </repositories>
 
   <scm>
