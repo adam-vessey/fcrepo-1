@@ -262,6 +262,21 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
           </exclusion>
+          <exclusion>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>javax.transaction</groupId>
+        <artifactId>jta</artifactId>
+        <version>1.1</version>
+        <exclusions>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
       <dependency>
@@ -486,9 +501,9 @@
     </repository>
 
     <repository>
-      <id>maven.glassfish.org</id>
+      <id>maven.java.net</id>
       <name>GlassFish Nexus Server</name>
-      <url>http://maven.glassfish.org/content/groups/glassfish</url>
+      <url>https://maven.java.net/content/groups/public/</url>
       <releases>
         <enabled>true</enabled>
       </releases>
@@ -509,6 +524,11 @@
       </snapshots>
     </repository>
 
+    <repository>
+      <id>thirdparty-releases</id>
+      <name>JBoss Thirdparty Releases</name>
+      <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases</url>
+    </repository>
   </repositories>
 
   <scm>
