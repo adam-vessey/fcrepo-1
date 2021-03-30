@@ -71,6 +71,7 @@ import org.springframework.context.annotation.CommonAnnotationBeanPostProcessor;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.ResolvableType;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
@@ -1693,6 +1694,26 @@ public abstract class Server
     @Override
     public Object getBean(String name, Object... args) throws BeansException {
         return m_moduleContext.getBean(name, args);
+    }
+
+    @Override
+    public <T> T getBean(Class<T> requiredType, Object... args) throws BeansException {
+        return m_moduleContext.getBean(requiredType, args);
+    }
+
+    @Override
+    public String[] getBeanNamesForAnnotation(Class<? extends Annotation> annotationType) {
+        return m_moduleContext.getBeanNamesForAnnotation(annotationType);
+    }
+
+    @Override
+    public String[] getBeanNamesForType(ResolvableType type) {
+        return m_moduleContext.getBeanNamesForType(type);
+    }
+
+    @Override
+    public boolean isTypeMatch(String name, ResolvableType typeToMatch) throws NoSuchBeanDefinitionException {
+        return m_moduleContext.isTypeMatch(name, typeToMatch);
     }
 
     @Override
