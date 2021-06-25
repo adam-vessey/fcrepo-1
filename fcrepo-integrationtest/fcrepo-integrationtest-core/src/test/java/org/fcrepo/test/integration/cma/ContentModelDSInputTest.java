@@ -4,8 +4,8 @@
  */
 package org.fcrepo.test.integration.cma;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.fcrepo.test.integration.cma.Util.filterMethods;
 
 import org.fcrepo.client.FedoraClient;

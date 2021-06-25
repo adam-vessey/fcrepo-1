@@ -5,8 +5,8 @@
 
 package org.fcrepo.test.integration;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists; 
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathNotExists; 

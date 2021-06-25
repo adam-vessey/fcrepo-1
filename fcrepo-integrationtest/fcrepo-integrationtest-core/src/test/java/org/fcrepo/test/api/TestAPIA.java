@@ -5,16 +5,14 @@
 
 package org.fcrepo.test.api;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import junit.framework.JUnit4TestAdapter;
 
 import org.custommonkey.xmlunit.NamespaceContext;
 import org.custommonkey.xmlunit.SimpleNamespaceContext;
@@ -47,6 +45,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 
+import junit.framework.JUnit4TestAdapter;
+
 /**
  * Test of the Fedora Access Service (API-A). describeRepository findObjects
  * getDatastreamDissemination getDissemination getObjectHistory getObjectProfile
@@ -56,10 +56,10 @@ import org.junit.runner.JUnitCore;
  * @author Edwin Shin
  */
 public class TestAPIA
-        extends FedoraServerTestCase {
+extends FedoraServerTestCase {
 
     private static FedoraClient s_client;
-    
+
     private FedoraAPIAMTOM apia;
 
     @Test
@@ -84,8 +84,8 @@ public class TestAPIA
         query.setConditions(factory.createFieldSearchQueryConditions(conds));
         FieldSearchResult result =
                 apia.findObjects(TypeUtility.convertStringtoAOS(resultFields),
-                                 maxResults,
-                                 query);
+                        maxResults,
+                        query);
         ResultList resultList = result.getResultList();
         List<ObjectFields> fields = resultList.getObjectFields();
         assertEquals(1, fields.size());
@@ -102,15 +102,15 @@ public class TestAPIA
         String xml = new String(bytes, "UTF-8");
         assertXpathExists("/oai_dc:dc", xml);
         assertXpathEvaluatesTo("demo:5",
-                               "/oai_dc:dc/dc:identifier/text( )",
-                               xml);
+                "/oai_dc:dc/dc:identifier/text( )",
+                xml);
         assertEquals(ds.getMIMEType(), "text/xml");
 
         // test for type E datastream
         ds =
                 apia.getDatastreamDissemination("demo:SmileyBeerGlass",
-                                                "MEDIUM_SIZE",
-                                                null);
+                        "MEDIUM_SIZE",
+                        null);
         bytes = TypeUtility.convertDataHandlerToBytes(ds.getStream());
         assertEquals(ds.getMIMEType(), "image/jpeg");
         assertTrue(bytes.length > 0);
@@ -132,10 +132,10 @@ public class TestAPIA
         Parameters params = new Parameters();
         diss =
                 apia.getDissemination("demo:5",
-                                      "fedora-system:3",
-                                      "viewDublinCore",
-                                      params,
-                                      null);
+                        "fedora-system:3",
+                        "viewDublinCore",
+                        params,
+                        null);
         assertEquals(diss.getMIMEType(), "text/html");
         assertTrue(TypeUtility.convertDataHandlerToBytes(diss.getStream()).length > 0);
     }
@@ -159,10 +159,10 @@ public class TestAPIA
         params.getParameter().add(prop);
         diss =
                 apia.getDissemination("demo:29",
-                                      "demo:27",
-                                      "convertImage",
-                                      params,
-                                      null);
+                        "demo:27",
+                        "convertImage",
+                        params,
+                        null);
         assertEquals(diss.getMIMEType(), "image/gif");
         assertTrue(TypeUtility.convertDataHandlerToBytes(diss.getStream()).length > 0);
     }
@@ -184,7 +184,7 @@ public class TestAPIA
     @Test
     public void testGetObjectProfileBasicCModel() throws Exception {
         for (String pid : new String[] {"demo:SmileyPens",
-                "demo:SmileyGreetingCard"}) {
+        "demo:SmileyGreetingCard"}) {
             ObjectProfile profile = apia.getObjectProfile(pid, null);
             boolean found = false;
             ObjModels objModels = profile.getObjModels();
@@ -214,7 +214,7 @@ public class TestAPIA
     @Before
     public void setUp() throws Exception {
         apia = s_client.getAPIAMTOM();
-        Map<String, String> nsMap = new HashMap<String, String>();
+        Map<String, String> nsMap = new HashMap<>();
         nsMap.put(OAI_DC.prefix, OAI_DC.uri);
         nsMap.put(DC.prefix, DC.uri);
         NamespaceContext ctx = new SimpleNamespaceContext(nsMap);
@@ -225,7 +225,7 @@ public class TestAPIA
     public void tearDown() {
         XMLUnit.setXpathNamespaceContext(SimpleNamespaceContext.EMPTY_CONTEXT);
     }
-    
+
     @BeforeClass
     public static void bootStrap() throws Exception {
         s_client = getFedoraClient();
@@ -238,13 +238,13 @@ public class TestAPIA
         // smiley:beerglass
         ingestImageCollectionDemoObjects(s_client);
     }
-    
+
     @AfterClass
     public static void cleanUp() throws Exception {
         purgeDemoObjects(s_client);
         s_client.shutdown();
     }
-    
+
     public static junit.framework.Test suite() {
         return new JUnit4TestAdapter(TestAPIA.class);
     }

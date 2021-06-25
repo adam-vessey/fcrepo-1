@@ -34,8 +34,8 @@ import org.fcrepo.server.journal.readerwriter.multicast.rmi.RmiTransport;
 import org.fcrepo.server.management.MockManagementDelegate;
 
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * NOTE: The tests which require a functioning RMI receiver do not work in all

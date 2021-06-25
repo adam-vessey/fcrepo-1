@@ -5,9 +5,8 @@
 
 package org.fcrepo.test.api;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-import junit.framework.JUnit4TestAdapter;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.fcrepo.client.FedoraClient;
 import org.fcrepo.server.access.FedoraAPIAMTOM;
@@ -21,6 +20,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 
+import junit.framework.JUnit4TestAdapter;
+
 
 
 
@@ -30,10 +31,10 @@ import org.junit.runner.JUnitCore;
  * @author Chris Wilper
  */
 public class TestAPIAConfigA
-        extends FedoraServerTestCase {
+extends FedoraServerTestCase {
 
     private static FedoraClient s_client;
-    
+
     private FedoraAPIAMTOM apia;
 
     @Test
@@ -45,21 +46,21 @@ public class TestAPIAConfigA
         //params.getParameter().add(new Property());
         MIMETypedStream diss =
                 apia.getDissemination("demo:26",
-                                      "demo:19",
-                                      "getPDF",
-                                      params,
-                                      null);
+                        "demo:19",
+                        "getPDF",
+                        params,
+                        null);
         assertEquals(diss.getMIMEType(), "application/pdf");
         assertTrue(TypeUtility.convertDataHandlerToBytes(diss.getStream()).length > 0);
     }
-    
+
     @BeforeClass
     public static void bootstrap() throws Exception {
         s_client = getFedoraClient();
         // demo:19, demo:26
         ingestFormattingObjectsDemoObjects(s_client);
     }
-    
+
     @AfterClass
     public static void cleanUp() throws Exception {
         purgeDemoObjects(s_client);

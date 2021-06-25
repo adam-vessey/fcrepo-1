@@ -28,7 +28,7 @@ import static org.fcrepo.client.utility.validate.process.ValidatorProcessParamet
 import static org.fcrepo.client.utility.validate.process.ValidatorProcessParameters.PARAMETER_USERNAME;
 
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 
 /**

@@ -105,7 +105,7 @@ public class ResourceIndexRebuilderTest {
             new Rebuild(rebuilder, options, server);
         } catch (Exception e) {
             e.printStackTrace();
-            junit.framework.Assert.fail(e.getMessage());
+            org.junit.Assert.fail(e.getMessage());
         }
     }
 

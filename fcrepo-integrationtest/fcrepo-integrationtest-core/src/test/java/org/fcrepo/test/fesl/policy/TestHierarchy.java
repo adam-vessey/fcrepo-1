@@ -1,7 +1,7 @@
 
 package org.fcrepo.test.fesl.policy;
 
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;

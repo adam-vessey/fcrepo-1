@@ -4,7 +4,7 @@
  */
 package org.fcrepo.test;
 
-import static junit.framework.Assert.fail;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

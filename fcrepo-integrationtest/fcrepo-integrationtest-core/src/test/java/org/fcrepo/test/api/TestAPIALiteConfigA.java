@@ -5,7 +5,7 @@
 
 package org.fcrepo.test.api;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 import junit.framework.JUnit4TestAdapter;
 
 import org.fcrepo.client.FedoraClient;

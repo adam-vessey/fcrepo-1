@@ -4,7 +4,7 @@
  */
 package org.fcrepo.test.api;
 
-import static junit.framework.Assert.fail;
+import static org.junit.Assert.fail;
 import static org.fcrepo.test.api.RISearchUtil.checkSPOCount;
 
 import java.io.StringReader;

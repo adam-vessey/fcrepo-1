@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.fcrepo.client.FedoraClient;
 import org.fcrepo.client.utility.AutoPurger;

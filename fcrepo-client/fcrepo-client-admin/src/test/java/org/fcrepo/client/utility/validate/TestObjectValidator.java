@@ -32,7 +32,7 @@ import org.fcrepo.mock.client.utility.validate.MockObjectSource;
 
 
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Testing to see that the {@link ObjectValidator} actually validates.

@@ -20,7 +20,7 @@ import org.fcrepo.server.journal.readerwriter.multicast.rmi.RmiJournalReceiverHe
 import org.fcrepo.server.journal.readerwriter.multicast.rmi.RmiTransportWriter;
 
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  * <p>
