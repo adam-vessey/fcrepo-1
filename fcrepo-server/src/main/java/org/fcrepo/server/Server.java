@@ -57,6 +57,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanReference;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
@@ -89,7 +90,7 @@ import org.xml.sax.SAXException;
  * @author Chris Wilper
  */
 public abstract class Server
-        extends Pluggable implements ApplicationContextAware, BeanDefinitionRegistry, ListableBeanFactory {
+extends Pluggable implements ApplicationContextAware, BeanDefinitionRegistry, ListableBeanFactory {
 
     public static final boolean USE_CACHE = true;
 
@@ -148,12 +149,12 @@ public abstract class Server
      */
     public static String NAMESPACE_PREFIX =
             MessageFormat.format(s_const.getString("namespace.prefix"),
-                                 new Object[] {"1", "0"}); // so config namespace uses 1/0/
+                    new Object[] {"1", "0"}); // so config namespace uses 1/0/
 
     /** The configuration file elements' namespace. 0={namespace.prefix} */
     public static String CONFIG_NAMESPACE =
             MessageFormat.format(s_const.getString("config.namespace"),
-                                 new Object[] {NAMESPACE_PREFIX});
+                    new Object[] {NAMESPACE_PREFIX});
 
     /** The configuration file root element's name. */
     public static String CONFIG_ELEMENT_ROOT =
@@ -264,7 +265,7 @@ public abstract class Server
     public static String INIT_CONFIG_SEVERE_NOIDGIVEN =
             MessageFormat.format(s_const
                     .getString("init.config.severe.noidgiven"), new Object[] {
-                    CONFIG_ELEMENT_DATASTORE, CONFIG_ATTRIBUTE_ID});
+                            CONFIG_ELEMENT_DATASTORE, CONFIG_ATTRIBUTE_ID});
 
     /**
      * Indicates that the config file's element's namespace does not match
@@ -281,7 +282,7 @@ public abstract class Server
     public static String INIT_CONFIG_SEVERE_NOROLEGIVEN =
             MessageFormat.format(s_const
                     .getString("init.config.severe.norolegiven"), new Object[] {
-                    CONFIG_ELEMENT_MODULE, CONFIG_ATTRIBUTE_ROLE});
+                            CONFIG_ELEMENT_MODULE, CONFIG_ATTRIBUTE_ROLE});
 
     /**
      * Indicates that a module element in the server configuration did not
@@ -290,10 +291,10 @@ public abstract class Server
      */
     public static String INIT_CONFIG_SEVERE_NOCLASSGIVEN =
             MessageFormat
-                    .format(s_const
-                                    .getString("init.config.severe.noclassgiven"),
-                            new Object[] {CONFIG_ELEMENT_MODULE,
-                                    CONFIG_ATTRIBUTE_CLASS});
+            .format(s_const
+                    .getString("init.config.severe.noclassgiven"),
+                    new Object[] {CONFIG_ELEMENT_MODULE,
+                            CONFIG_ATTRIBUTE_CLASS});
 
     /**
      * Indicates that an attribute of an element was assigned the same value as
@@ -311,11 +312,11 @@ public abstract class Server
      */
     public static String INIT_CONFIG_SEVERE_INCOMPLETEPARAM =
             MessageFormat
-                    .format(s_const
-                                    .getString("init.config.severe.incompleteparam"),
-                            new Object[] {CONFIG_ELEMENT_PARAM,
-                                    CONFIG_ATTRIBUTE_NAME,
-                                    CONFIG_ATTRIBUTE_VALUE});
+            .format(s_const
+                    .getString("init.config.severe.incompleteparam"),
+                    new Object[] {CONFIG_ELEMENT_PARAM,
+                            CONFIG_ATTRIBUTE_NAME,
+                            CONFIG_ATTRIBUTE_VALUE});
 
     /**
      * Tells which config element is being looked at in order to load its
@@ -433,7 +434,7 @@ public abstract class Server
      * Holds an instance of a <code>Server</code> for each distinct
      * <code>File</code> given as a parameter to <code>getInstance(...)</code>
      */
-    protected static Map<File, Server> s_instances = new HashMap<File, Server>();
+    protected static Map<File, Server> s_instances = new HashMap<>();
 
     /**
      * The server's home directory; this is typically the 'server' subdirectory under $FEDORA_HOME.
@@ -452,7 +453,7 @@ public abstract class Server
      * Datastore configurations initialized from the server config file.
      * Should now be handled by application context
      */
-//    private Map<String, DatastoreConfig> m_datastoreConfigs;
+    //    private Map<String, DatastoreConfig> m_datastoreConfigs;
 
     /**
      * Modules that have been loaded.
@@ -492,11 +493,11 @@ public abstract class Server
      */
 
     protected Server(Map<String,String> params, File homeDir)
-        throws ServerInitializationException, ModuleInitializationException {
+            throws ServerInitializationException, ModuleInitializationException {
 
         setParameters(params);
         m_initialized = false;
-        m_loadedModuleRoles = new HashSet<String>();
+        m_loadedModuleRoles = new HashSet<>();
         m_serverDir = new File(homeDir, "server");
         m_uploadDir = new File(m_serverDir, "management/upload");
         try{
@@ -509,7 +510,7 @@ public abstract class Server
             logDir.mkdir(); // try to create dir if doesn't exist
         }
         m_configFile = new File(m_serverDir + File.separator + CONFIG_DIR
-                                + File.separator + CONFIG_FILE);
+                + File.separator + CONFIG_FILE);
         Server.s_instances.put(homeDir, this);
     }
 
@@ -546,7 +547,7 @@ public abstract class Server
             }
             m_moduleContext = new GenericApplicationContext(m_serverContext);
             registerBeanDefinition(CommonAnnotationBeanPostProcessor.class.getName(),
-                                                   getScannedBeanDefinition(CommonAnnotationBeanPostProcessor.class.getName()));
+                    getScannedBeanDefinition(CommonAnnotationBeanPostProcessor.class.getName()));
             // Load bean definitions that should be override-able (ie, are new)
 
             loadSpringModules();
@@ -612,13 +613,13 @@ public abstract class Server
                 if (!knownBeanDefinition(role)){
                     logger.info("Loading bean definitions for {} impl class={}", className, role);
                     registerBeanDefinition(role,
-                                           createModuleBeanDefinition(className, mconfig.getParameters(), role));
+                            createModuleBeanDefinition(className, mconfig.getParameters(), role));
                 } else {
                     logger.info("FCFG bean definitions for {} superceded by existing Spring bean definition", className);
                 }
                 if (!knownBeanDefinition(role+"Configuration")){
                     registerBeanDefinition(role+"Configuration",
-                                           createModuleConfigurationBeanDefinition(role));
+                            createModuleConfigurationBeanDefinition(role));
                 }
             }
             registerBeanDefinitions();
@@ -635,7 +636,7 @@ public abstract class Server
             // the required module roles (dependencies) have been fulfilled
             // for that module.
             m_statusFile.append(ServerState.STARTING,
-                                "Post-Initializing Modules");
+                    "Post-Initializing Modules");
             for (String moduleName:moduleNames){
                 Module m = getModule(moduleName);
                 logger.info("Post-Initializing " + m.getClass().getName());
@@ -673,7 +674,7 @@ public abstract class Server
             throw sie;
         } catch (ModuleInitializationException mie) {
             logger.error("Module (" + mie.getRole() + ") failed to initialize",
-                      mie);
+                    mie);
             try {
                 shutdown(null);
             } catch (Throwable th) {
@@ -687,7 +688,7 @@ public abstract class Server
                 shutdown(null);
             } catch (Throwable oth) {
                 logger.warn("Error shutting down server after failed startup",
-                              oth);
+                        oth);
             }
             throw new RuntimeException(msg, th);
         }
@@ -771,7 +772,7 @@ public abstract class Server
     }
 
     protected static ScannedGenericBeanDefinition getScannedBeanDefinition(String className)
-        throws IOException {
+            throws IOException {
         MetadataReader reader = s_readerFactory.getMetadataReader(className);
         ScannedGenericBeanDefinition beanDefinition = new ScannedGenericBeanDefinition(reader);
         return beanDefinition;
@@ -786,7 +787,7 @@ public abstract class Server
      * @return
      */
     protected static GenericBeanDefinition createModuleBeanDefinition(String className, Map<String,String> params, String role)
-        throws IOException {
+            throws IOException {
         ScannedGenericBeanDefinition result = getScannedBeanDefinition(className);
         result.setParentName(Module.class.getName());
         result.setScope(BeanDefinition.SCOPE_SINGLETON);
@@ -843,7 +844,7 @@ public abstract class Server
      * @throws IOException
      */
     protected static GenericBeanDefinition getTriplestoreConnectorBeanDefinition(DatastoreConfiguration tsDC)
-        throws IOException {
+            throws IOException {
         String tsConnector = tsDC.getParameter("connectorClassName",Parameter.class).getValue();
         ScannedGenericBeanDefinition beanDefinition = getScannedBeanDefinition(tsConnector);
         beanDefinition.setAutowireCandidate(true);
@@ -851,7 +852,7 @@ public abstract class Server
         Iterator<Parameter> it;
         Parameter p;
 
-        Map<String, String> tsTC = new HashMap<String, String>();
+        Map<String, String> tsTC = new HashMap<>();
         it = tsDC.getParameters(Parameter.class).iterator();
         while (it.hasNext()) {
             p = it.next();
@@ -866,8 +867,8 @@ public abstract class Server
 
     private void loadSpringModules(){
         File springDir =
-            new File(m_serverDir + File.separator + CONFIG_DIR
-                     + File.separator + SPRING_DIR);
+                new File(m_serverDir + File.separator + CONFIG_DIR
+                        + File.separator + SPRING_DIR);
         if (springDir.exists() && springDir.isDirectory()){
 
             // load some Spring configs with an XmlBeanDefinitionReader
@@ -888,13 +889,13 @@ public abstract class Server
 
     @Override
     public Object getBean(String name)
-        throws BeansException {
+            throws BeansException {
         return m_moduleContext.getBean(name);
     }
 
     @Override
     public boolean containsBean(String name)
-    throws BeansException {
+            throws BeansException {
         return m_moduleContext.containsBean(name);
     }
 
@@ -952,11 +953,11 @@ public abstract class Server
      */
     private static final Map<String,String> loadParameters(Element element, String dAttribute)
             throws ServerInitializationException {
-        Map<String,String> params = new HashMap<String,String>();
+        Map<String,String> params = new HashMap<>();
 
         logger.debug(MessageFormat.format(INIT_CONFIG_CONFIG_EXAMININGELEMENT,
-                                       new Object[] {element.getLocalName(),
-                                               dAttribute}));
+                new Object[] {element.getLocalName(),
+                        dAttribute}));
         for (int i = 0; i < element.getChildNodes().getLength(); i++) {
             Node n = element.getChildNodes().item(i);
             if (n.getNodeType() == Node.ELEMENT_NODE) {
@@ -965,7 +966,7 @@ public abstract class Server
                     NamedNodeMap attrs = n.getAttributes();
                     Node nameNode =
                             attrs.getNamedItemNS(CONFIG_NAMESPACE,
-                                                 CONFIG_ATTRIBUTE_NAME);
+                                    CONFIG_ATTRIBUTE_NAME);
                     if (nameNode == null) {
                         nameNode = attrs.getNamedItem(CONFIG_ATTRIBUTE_NAME);
                     }
@@ -973,7 +974,7 @@ public abstract class Server
                     if (s_serverProfile != null) {
                         valueNode =
                                 attrs.getNamedItemNS(CONFIG_NAMESPACE,
-                                                     s_serverProfile + "value");
+                                        s_serverProfile + "value");
                         if (valueNode == null) {
                             valueNode =
                                     attrs.getNamedItem(s_serverProfile
@@ -983,7 +984,7 @@ public abstract class Server
                     if (valueNode == null) {
                         valueNode =
                                 attrs.getNamedItemNS(CONFIG_NAMESPACE,
-                                                     CONFIG_ATTRIBUTE_VALUE);
+                                        CONFIG_ATTRIBUTE_VALUE);
                         if (valueNode == null) {
                             valueNode =
                                     attrs.getNamedItem(CONFIG_ATTRIBUTE_VALUE);
@@ -1050,7 +1051,7 @@ public abstract class Server
 
     public final String status(Context context) throws AuthzException {
         (getBean("org.fcrepo.server.security.Authorization", Authorization.class))
-                .enforceServerStatus(context);
+        .enforceServerStatus(context);
         return "RUNNING";
     }
 
@@ -1141,7 +1142,7 @@ public abstract class Server
             if (className.isEmpty()) {
                 className =
                         rootElement.getAttributeNS(CONFIG_NAMESPACE,
-                                                   CONFIG_ATTRIBUTE_CLASS);
+                                CONFIG_ATTRIBUTE_CLASS);
                 if (className.isEmpty()) {
                     className = DEFAULT_SERVER_CLASS;
                 }
@@ -1149,7 +1150,7 @@ public abstract class Server
             try {
                 @SuppressWarnings("unchecked")
                 Class<? extends Server> serverClass =
-                        (Class<? extends Server>) Class.forName(className);
+                (Class<? extends Server>) Class.forName(className);
                 Class<?> param1Class =
                         Class.forName(SERVER_CONSTRUCTOR_PARAM1_CLASS);
                 Class<?> param2Class =
@@ -1222,13 +1223,13 @@ public abstract class Server
     }
 
     /**
-    * Gets the server's temp file upload directory.
-    *
-    * @return The directory.
-    */
+     * Gets the server's temp file upload directory.
+     *
+     * @return The directory.
+     */
     public File getUploadDir() {
-       return m_uploadDir;
-   }
+        return m_uploadDir;
+    }
 
     /**
      * Gets a <code>DatastoreConfig</code>.
@@ -1328,7 +1329,7 @@ public abstract class Server
      *         If a severe module shutdown-related error occurred.
      */
     public final void shutdown(Context context) throws ServerShutdownException,
-            ModuleShutdownException, AuthzException {
+    ModuleShutdownException, AuthzException {
 
         logger.info("Shutting down server");
         Throwable mse = null;
@@ -1377,7 +1378,7 @@ public abstract class Server
      */
     @Override
     public final void finalize() throws ServerShutdownException,
-            ModuleShutdownException {
+    ModuleShutdownException {
         shutdownServer();
     }
 
@@ -1476,7 +1477,7 @@ public abstract class Server
                 String name = iter2.next();
                 String value =
                         (getDatastoreConfig(id))
-                                .getParameter(name);
+                        .getParameter(name);
                 if (i > 0) {
                     out.append(padding);
                 }
@@ -1539,9 +1540,9 @@ public abstract class Server
      */
     public static ServerConfiguration getConfig() {
         return getConfig(new File(Constants.FEDORA_HOME,
-                             "server"));
+                "server"));
     }
-    
+
     /**
      * Gets the server configuration under a given $FEDORA_HOME/server/ directory.
      * @param serverHome the server directory
@@ -1551,13 +1552,13 @@ public abstract class Server
         try {
             InputStream fcfg = new FileInputStream(
                     new File(serverHome,
-                             "config/fedora.fcfg"));
+                            "config/fedora.fcfg"));
             ServerConfigurationParser parser =
-                new ServerConfigurationParser(fcfg);
+                    new ServerConfigurationParser(fcfg);
             return parser.parse();
         } catch (IOException e) {
             throw new FaultException("Error loading server configuration",
-                                     e);
+                    e);
         }
     }
 
@@ -1596,10 +1597,10 @@ public abstract class Server
     public WebClientConfiguration getWebClientConfig() {
         return m_webClientConfig;
     }
-    
+
     protected boolean knownBeanDefinition(String beanName) {
         return m_moduleContext.containsBeanDefinition(beanName)
-               || m_moduleContext.getParent().containsBeanDefinition(beanName);
+                || m_moduleContext.getParent().containsBeanDefinition(beanName);
     }
 
     // Spring methods
@@ -1662,8 +1663,8 @@ public abstract class Server
 
     @Override
     public String[] getBeanNamesForType(@SuppressWarnings("rawtypes") Class type,
-                                        boolean includeNonSingletons,
-                                        boolean allowEagerInit) {
+            boolean includeNonSingletons,
+            boolean allowEagerInit) {
         return m_moduleContext.getBeanNamesForType(type, includeNonSingletons, allowEagerInit);
     }
 
@@ -1674,8 +1675,8 @@ public abstract class Server
 
     @Override
     public <T> Map<String,T> getBeansOfType(Class<T> type,
-                              boolean includeNonSingletons,
-                              boolean allowEagerInit) throws BeansException {
+            boolean includeNonSingletons,
+            boolean allowEagerInit) throws BeansException {
         return m_moduleContext.getBeansOfType(type, includeNonSingletons, allowEagerInit);
     }
 
@@ -1687,7 +1688,7 @@ public abstract class Server
 
     @Override
     public <T>T getBean(Class <T> requiredType)
-        throws BeansException {
+            throws BeansException {
         return m_moduleContext.getBean(requiredType);
     }
 
@@ -1747,7 +1748,37 @@ public abstract class Server
 
     @Override
     public <T extends Annotation> T findAnnotationOnBean(String beanName, Class<T> annotationType)
-        {
+    {
         return m_moduleContext.findAnnotationOnBean(beanName, annotationType);
-        }
+    }
+
+    @Override
+    public <T> ObjectProvider<T> getBeanProvider(Class<T> requiredType, boolean allowEagerInit) {
+        return m_moduleContext.getBeanProvider(requiredType, allowEagerInit);
+    }
+
+    @Override
+    public <T> ObjectProvider<T> getBeanProvider(ResolvableType requiredType, boolean allowEagerInit) {
+        return m_moduleContext.getBeanProvider(requiredType, allowEagerInit);
+    }
+
+    @Override
+    public String[] getBeanNamesForType(ResolvableType type, boolean includeNonSingletons, boolean allowEagerInit) {
+        return m_moduleContext.getBeanNamesForType(type, includeNonSingletons, allowEagerInit);
+    }
+
+    @Override
+    public <T> ObjectProvider<T> getBeanProvider(Class<T> requiredType) {
+        return m_moduleContext.getBeanProvider(requiredType);
+    }
+
+    @Override
+    public <T> ObjectProvider<T> getBeanProvider(ResolvableType requiredType) {
+        return m_moduleContext.getBeanProvider(requiredType);
+    }
+
+    @Override
+    public Class<?> getType(String name, boolean allowFactoryBeanInit) throws NoSuchBeanDefinitionException {
+        return m_moduleContext.getType(name, allowFactoryBeanInit);
+    }
 }

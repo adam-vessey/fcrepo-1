@@ -11,7 +11,6 @@ import java.sql.Connection;
 import java.util.Date;
 import java.util.Map;
 
-import org.w3c.dom.Element;
 import org.fcrepo.common.Constants;
 import org.fcrepo.common.Models;
 import org.fcrepo.common.PID;
@@ -26,6 +25,7 @@ import org.fcrepo.server.utilities.status.ServerState;
 import org.fcrepo.server.utilities.status.ServerStatusFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Element;
 
 
 

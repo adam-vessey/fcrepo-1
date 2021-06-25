@@ -4,6 +4,7 @@
  */
 package org.fcrepo.server.management;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -17,8 +18,6 @@ import org.fcrepo.server.Server;
 import org.fcrepo.server.errors.ModuleInitializationException;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.matchers.JUnitMatchers;
-import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
 
@@ -28,9 +27,6 @@ import org.junit.rules.TemporaryFolder;
  */
 public class ManagementModuleTest {
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
     /**
@@ -38,19 +34,23 @@ public class ManagementModuleTest {
      */
     @Test
     public void testInitModuleFailsWithoutUploadDirectory() throws Exception {
-        thrown.expect(ModuleInitializationException.class);
-        thrown.expectMessage(JUnitMatchers
-                .containsString("Failed to create temp dir at"));
-        File badUploadDir = folder.newFile("fileNotDirectory");
+        try {
+            File badUploadDir = folder.newFile("fileNotDirectory");
 
-        Server mockedServer = mock(BasicServer.class);
-        when(mockedServer.getUploadDir()).thenReturn(badUploadDir);
+            Server mockedServer = mock(BasicServer.class);
+            when(mockedServer.getUploadDir()).thenReturn(badUploadDir);
 
-        Map<String, String> params = new HashMap<String, String>();
-        ManagementModule mm = new ManagementModule(params, null, null);
-        ManagementModule spy = spy(mm);
-        when(spy.getServer()).thenReturn(mockedServer);
-        
-        spy.initModule();
+            Map<String, String> params = new HashMap<>();
+            ManagementModule mm = new ManagementModule(params, null, null);
+            ManagementModule spy = spy(mm);
+            when(spy.getServer()).thenReturn(mockedServer);
+
+            spy.initModule();
+            assertTrue("Exception was not thrown.", false);
+        }
+        catch (ModuleInitializationException e) {
+            assertTrue("Exception with thrown and contains the expected string.",
+                    e.getMessage().contains("Failed to create temp dir at"));
+        }
     }
 }

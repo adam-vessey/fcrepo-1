@@ -16,10 +16,10 @@ import org.fcrepo.server.config.ServerConfiguration;
 import org.fcrepo.server.errors.ServerInitializationException;
 import org.fcrepo.server.storage.ConnectionPool;
 import org.fcrepo.server.utilities.SQLUtility;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExternalResource;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -27,45 +27,32 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({"org.slf4j.*", "org.apache.xerces.*", "javax.xml.*",
     "org.xml.sax.*", "javax.management.*"})
 @PrepareForTest({SQLUtility.class})
 public class BasicServerTest {
 
-    private static TemporaryFolder tmpFolder;
+    @Rule
+    private TemporaryFolder tmpFolder = new TemporaryFolder();
 
     @Mock
     private Connection mockDefaultConnection;
-    
+
     @Mock
     private Connection mockRWConnection;
-    
+
     @Mock
     private ConnectionPool mockPool;
-        
-    private static File fedoraHomeFixture;
-    
-    private BasicServer test;
-    
-    @AfterClass
-    public static void cleanUp() {
-        if (fedoraHomeFixture != null) fedoraHomeFixture.delete();
-        tmpFolder.delete();
-    }
 
-    @BeforeClass
-    public static void bootstrap() throws IOException {
-        tmpFolder = new TemporaryFolder();
-        tmpFolder.create();
-        fedoraHomeFixture = fakeFedoraHome();
-    }
-    
-    private static File fakeFedoraHome() throws IOException {
+    private File fedoraHomeFixture;
+
+    private BasicServer test;
+
+    private File fakeFedoraHome() throws IOException {
         File fake = tmpFolder.newFolder("fedoraHome");
         System.setProperty("fedora.home", fake.getAbsolutePath());
-        new File(fake, "server/management/uplaods").mkdirs();
+        new File(fake, "server/management/uploads").mkdirs();
         new File(fake, "server/logs").mkdir();
         new File(fake, "server/config").mkdir();
         File fcfg = new File(fake, "server/config/fedora.fcfg");
@@ -74,22 +61,32 @@ public class BasicServerTest {
         writer.close();
         return fake;
     }
-    
+
+    @Rule
+    public ExternalResource testResource = new ExternalResource() {
+        @Override
+        protected void before() throws Throwable {
+            fedoraHomeFixture = fakeFedoraHome();
+            test = new BasicServer(new HashMap<String, String>(), fedoraHomeFixture);
+        }
+
+        @Override
+        protected void after() {
+            fedoraHomeFixture = null;
+            test = null;
+        }
+    };
+
     @Before
     public void setUp() throws Exception {
-        fedoraHomeFixture = fakeFedoraHome();
-        
         mockStatic(SQLUtility.class);
         when(SQLUtility.getConnectionPool(any(ServerConfiguration.class)))
         .thenReturn(mockPool);
         when(mockPool.getReadWriteConnection()).thenReturn(mockRWConnection);
         when(SQLUtility.getDefaultConnection(any(ServerConfiguration.class)))
         .thenReturn(mockDefaultConnection);
-        
-        
-        test = new BasicServer(new HashMap<String, String>(), fedoraHomeFixture);
     }
-    
+
     @Test
     public void testFirstRunEmptyDatabase() throws Exception {
         when(SQLUtility.getMostRecentRebuild(mockRWConnection))

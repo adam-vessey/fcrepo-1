@@ -13,7 +13,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.zip.ZipFile;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -23,14 +23,14 @@ public class TestZip {
     @ClassRule
     public static TemporaryFolder folder = new TemporaryFolder();
 
-    private File TMP_DIR;
+    private static File TMP_DIR;
 
-    private File SRC_DIR;
+    private static File SRC_DIR;
 
-    private File ZIP_FILE;
+    private static File ZIP_FILE;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUp() throws Exception {
         TMP_DIR = folder.newFolder("TestZip");
         SRC_DIR = new File(TMP_DIR, "src");
         ZIP_FILE = new File(TMP_DIR, "test.zip");

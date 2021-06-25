@@ -124,12 +124,17 @@
     <jersey.version>1.8</jersey.version>
     <sesame.version>2.7.11</sesame.version>
     <slf4j.version>1.7.2</slf4j.version>
-    <spring.version>[4.3.20,4.99999.99999)</spring.version>
+    <!--<spring.version>[4.3.20,4.99999.99999)</spring.version>-->
+    <spring.version>[5.2.10,5.99999.99999)</spring.version>
     <trippi.version>1.5.10</trippi.version>
-    <powermock.version>1.5.1</powermock.version>
+    <!--<powermock.version>[1.5.1,1.99999.99999)</powermock.version>-->
+    <powermock.version>1.6.1</powermock.version>
     <httpcomponents.version>4.2.5</httpcomponents.version>
     <httpcore.version>4.2.4</httpcore.version>
     <xacml.version>2.0.9.Final</xacml.version>
+    <tomcat.version>7.0.109</tomcat.version>
+    <mysql.version>8.0.16</mysql.version>
+    <postgresql.version>9.3-1102-jdbc41</postgresql.version>
   </properties>
 
   <dependencyManagement>
@@ -583,8 +588,8 @@
       </dependency>
       <dependency>
         <groupId>javax.servlet</groupId>
-        <artifactId>servlet-api</artifactId>
-        <version>2.4</version>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>3.0.1</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
@@ -663,7 +668,7 @@
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>[4.13.1,)</version>
+        <version>[4.13.1,4.99999.99999)</version>
         <scope>test</scope>
       </dependency>
       <dependency>

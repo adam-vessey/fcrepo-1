@@ -44,6 +44,7 @@
       <resource>
         <directory>src/main/resources/properties/resources</directory>
         <targetPath>resources</targetPath>
+        <filtering>true</filtering>
       </resource>
       <resource>
         <directory>src/main/resources/properties/batch-demo</directory>
@@ -455,7 +456,7 @@
 
     <dependency>
       <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
+      <artifactId>javax.servlet-api</artifactId>
     </dependency>
 
     <dependency>
