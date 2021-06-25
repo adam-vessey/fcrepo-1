@@ -4,6 +4,8 @@
  */
 package org.fcrepo.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -15,20 +17,17 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.custommonkey.xmlunit.XMLUnit;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 import org.fcrepo.client.FedoraClient;
 import org.fcrepo.client.search.SearchResultParser;
 import org.fcrepo.client.utility.AutoPurger;
 import org.fcrepo.client.utility.ingest.Ingest;
 import org.fcrepo.client.utility.ingest.IngestCounter;
-import org.fcrepo.common.Constants;
 import org.fcrepo.common.http.HttpInputStream;
 import org.fcrepo.server.access.FedoraAPIAMTOM;
 import org.fcrepo.server.management.FedoraAPIMMTOM;
 import org.junit.runner.JUnitCore;
-
-import static org.junit.Assert.assertTrue;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
 /**
  * Base class for JUnit tests that assume a running Fedora instance.
@@ -36,8 +35,7 @@ import static org.junit.Assert.assertTrue;
  * @author Edwin Shin
  */
 public abstract class FedoraServerTestCase
-        extends FedoraTestCase
-        implements Constants {
+extends FedoraTestCase {
 
     public FedoraServerTestCase() {
         super();
@@ -86,11 +84,11 @@ public abstract class FedoraServerTestCase
     public static void ingestDemoObjects() throws Exception {
         ingestDemoObjects("/");
     }
-    
+
     public static void ingestDemoObjects(FedoraClient client) throws Exception {
         ingestDemoObjects(client, "/");
     }
-    
+
     public static void ingestDemoObjects(FedoraAPIAMTOM apia, FedoraAPIMMTOM apim) throws Exception {
         ingestDemoObjects(apia, apim, "/");
     }
@@ -158,18 +156,18 @@ public abstract class FedoraServerTestCase
                     null,
                     new PrintStream(File.createTempFile("demo",
                             null)),
-                            new IngestCounter());
+                    new IngestCounter());
         }
     }
-    
+
     public static void ingestDocumentTransformDemoObjects(FedoraClient client)
-        throws Exception {
+            throws Exception {
         ingestDemoObjects(client, "local-server-demos" + File.separator + "document-transform-demo");
     }
 
     public static void ingestFormattingObjectsDemoObjects(FedoraClient client)
             throws Exception {
-            ingestDemoObjects(client, "local-server-demos" + File.separator + "formatting-objects-demo");
+        ingestDemoObjects(client, "local-server-demos" + File.separator + "formatting-objects-demo");
     }
 
     /**
@@ -179,22 +177,22 @@ public abstract class FedoraServerTestCase
      */
     public static void ingestImageCollectionDemoObjects(FedoraClient client)
             throws Exception {
-            ingestDemoObjects(client, "local-server-demos" + File.separator + "image-collection-demo");
+        ingestDemoObjects(client, "local-server-demos" + File.separator + "image-collection-demo");
     }
 
     public static void ingestImageManipulationDemoObjects(FedoraClient client)
             throws Exception {
-            ingestDemoObjects(client, "local-server-demos" + File.separator + "image-manip-demo");
+        ingestDemoObjects(client, "local-server-demos" + File.separator + "image-manip-demo");
     }
 
     public static void ingestSimpleDocumentDemoObjects(FedoraClient client)
             throws Exception {
-            ingestDemoObjects(client, "local-server-demos" + File.separator + "simple-document-demo");
+        ingestDemoObjects(client, "local-server-demos" + File.separator + "simple-document-demo");
     }
 
     public static void ingestSimpleImageDemoObjects(FedoraClient client)
             throws Exception {
-            ingestDemoObjects(client, "local-server-demos" + File.separator + "simple-image-demo");
+        ingestDemoObjects(client, "local-server-demos" + File.separator + "simple-image-demo");
     }
 
     /**
@@ -218,32 +216,32 @@ public abstract class FedoraServerTestCase
     }
 
     public static Set<String> getDemoObjects(FedoraClient client)
-        throws Exception {
+            throws Exception {
         HttpInputStream queryResult;
         queryResult =
                 client.get(getBaseURL() + "/search?query=pid~demo:*"
-                           + "&maxResults=1000&pid=true&xml=true", true, true);
+                        + "&maxResults=1000&pid=true&xml=true", true, true);
         SearchResultParser parser = new SearchResultParser(queryResult);
 
         Set<String> result = parser.getPIDs();
         queryResult.close();
         return result;
     }
-    
+
     @Deprecated
     public static void purgeDemoObjects() throws Exception {
         FedoraClient client = getFedoraClient();
         purgeDemoObjects(client);
         client.shutdown();
     }
-    
+
     public static void purgeDemoObjects(FedoraClient client) throws Exception {
         FedoraAPIMMTOM apim = client.getAPIMMTOM();
         for (String pid : getDemoObjects(client)) {
             AutoPurger.purge(apim, pid, null);
         }
     }
-    
+
     @Deprecated
     public static void purgeDemoObjects(FedoraAPIMMTOM apim) throws Exception {
         for (String pid : getDemoObjects()) {
@@ -256,29 +254,30 @@ public abstract class FedoraServerTestCase
         final int numThreads = callables.length;
         final ExecutorService threadPool = Executors.newFixedThreadPool(numThreads);
         try {
-          final CountDownLatch allExecutorThreadsReady = new CountDownLatch(numThreads);
-          final CountDownLatch afterInitBlocker = new CountDownLatch(1);
-          final CountDownLatch allDone = new CountDownLatch(numThreads);
-          for (final Callable<?> submittedTestCallable : callables) {
-            threadPool.submit(new Callable<Object>() {
-              public Object call() throws Exception {
-                allExecutorThreadsReady.countDown();
-                try {
-                  afterInitBlocker.await();
-                  return submittedTestCallable.call();
-                } finally {
-                  allDone.countDown();
-                }
-              }
-            });
-          }
-          // wait until all threads are ready
-          assertTrue("Timeout initializing threads! Perform long lasting initializations before passing runnables to assertConcurrent", allExecutorThreadsReady.await(callables.length * 10, TimeUnit.MILLISECONDS));
-          // start all test runners
-          afterInitBlocker.countDown();
-          assertTrue("Thread timeout! More than 5 seconds", allDone.await(5, TimeUnit.SECONDS));
+            final CountDownLatch allExecutorThreadsReady = new CountDownLatch(numThreads);
+            final CountDownLatch afterInitBlocker = new CountDownLatch(1);
+            final CountDownLatch allDone = new CountDownLatch(numThreads);
+            for (final Callable<?> submittedTestCallable : callables) {
+                threadPool.submit(new Callable<Object>() {
+                    @Override
+                    public Object call() throws Exception {
+                        allExecutorThreadsReady.countDown();
+                        try {
+                            afterInitBlocker.await();
+                            return submittedTestCallable.call();
+                        } finally {
+                            allDone.countDown();
+                        }
+                    }
+                });
+            }
+            // wait until all threads are ready
+            assertTrue("Timeout initializing threads! Perform long lasting initializations before passing runnables to assertConcurrent", allExecutorThreadsReady.await(callables.length * 10, TimeUnit.MILLISECONDS));
+            // start all test runners
+            afterInitBlocker.countDown();
+            assertTrue("Thread timeout! More than 5 seconds", allDone.await(5, TimeUnit.SECONDS));
         } finally {
-          threadPool.shutdownNow();
+            threadPool.shutdownNow();
         }
     }
 

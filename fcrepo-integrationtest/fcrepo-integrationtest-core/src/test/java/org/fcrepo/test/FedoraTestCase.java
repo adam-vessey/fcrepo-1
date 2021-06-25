@@ -12,14 +12,13 @@ import java.io.InputStreamReader;
 
 import javax.xml.transform.TransformerFactory;
 
-import net.sf.saxon.FeatureKeys;
-
 import org.custommonkey.xmlunit.XMLUnit;
-
 import org.fcrepo.client.FedoraClient;
 import org.fcrepo.common.FedoraTestConstants;
 import org.fcrepo.server.config.ServerConfiguration;
 import org.fcrepo.server.config.ServerConfigurationParser;
+
+import net.sf.saxon.FeatureKeys;
 
 
 
@@ -30,10 +29,10 @@ import org.fcrepo.server.config.ServerConfigurationParser;
  * @author Edwin Shin
  */
 public abstract class FedoraTestCase
-        implements FedoraTestConstants {
+implements FedoraTestConstants {
 
     public static String ssl = "http";
-    
+
     public FedoraTestCase() {
         TransformerFactory factory = XMLUnit.getTransformerFactory();
         if (factory.getClass().getName()
@@ -104,8 +103,8 @@ public abstract class FedoraTestCase
     public static String getDemoAppServerContext() {
         return getServerConfiguration()
                 .getParameter("fedoraDemoAppServerContext") != null ? getServerConfiguration()
-                .getParameter("fedoraDemoAppServerContext")
-                : "fedora-demo";
+                        .getParameter("fedoraDemoAppServerContext")
+                        : "fedora-demo";
     }
 
     // hack to dynamically set protocol based on settings in beSecurity
@@ -152,15 +151,15 @@ public abstract class FedoraTestCase
     }
 
     public static FedoraClient getFedoraClient(String baseURL,
-                                               String username,
-                                               String password)
-            throws Exception {
+            String username,
+            String password)
+                    throws Exception {
         return new FedoraClient(baseURL, username, password);
     }
-    
+
     public static String getRIImplementation() throws Exception {
         return getServerConfiguration().
                 getModuleConfiguration("org.fcrepo.server.resourceIndex.ResourceIndex").
-                  getParameter("datastore");
+                getParameter("datastore");
     }
 }

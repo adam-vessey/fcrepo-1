@@ -15,14 +15,40 @@
   <build>
     <resources>
       <resource>
-        <directory>${basedir}/src/main/resources</directory>
+        <directory>${basedir}/src/test/resources</directory>
         <filtering>false</filtering>
       </resource>
     </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skipTests>true</skipTests>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 
   <dependencies>
-
+    
+    <dependency>
+      <groupId>org.fcrepo</groupId>
+      <artifactId>fcrepo-common</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    
     <dependency>
       <groupId>org.fcrepo</groupId>
       <artifactId>fcrepo-server</artifactId>
@@ -141,11 +167,6 @@
       <artifactId>fedora-client-core</artifactId>
       <version>0.5</version>
     </dependency>
-    
-    <dependency>
-      <groupId>org.fcrepo</groupId>
-      <artifactId>fcrepo-common</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+
   </dependencies>
 </project>
