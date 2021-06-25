@@ -175,7 +175,7 @@
                   <groupId>org.fcrepo</groupId>
                   <artifactId>fcrepo-integrationtest-core</artifactId>
                   <version>${project.version}</version>
-                  <type>jar</type>
+                  <type>test-jar</type>
                   <overWrite>true</overWrite>
                   <outputDirectory>${project.build.directory}/ext/fcrepo-integrationtest-core/</outputDirectory>
                   <includes>**/scripts/*.xml,**/test-policies/*.xml,**/fesl-test-policies/*.xml,**/config/spring/*.xml</includes>
