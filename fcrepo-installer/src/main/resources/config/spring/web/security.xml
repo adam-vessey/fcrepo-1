@@ -9,12 +9,12 @@
                          http://www.springframework.org/schema/context
                          http://www.springframework.org/schema/context/spring-context-3.0.xsd
                          http://www.springframework.org/schema/security
-                         http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+                         http://www.springframework.org/schema/security/spring-security.xsd">
 
   <context:annotation-config/>
 
   <bean id="springSecurityFilterChain" class="org.springframework.security.web.FilterChainProxy">
-    <security:filter-chain-map path-type="ant">
+    <security:filter-chain-map request-matcher="ant">
 
 
       <!-- Backend - getDSAuthenticated gets auth filters, getDS does not -->
@@ -79,7 +79,7 @@
     class="org.springframework.security.web.access.channel.ChannelProcessingFilter">
     <property name="channelDecisionManager" ref="channelDecisionManager"/>
     <property name="securityMetadataSource">
-      <security:filter-invocation-definition-source path-type="ant">
+      <security:filter-security-metadata-source request-matcher="ant" use-expressions="false">
 
         <!-- This pattern is used by FedoraClient to determine whether apim endpoint requires SSL or not -->
         <security:intercept-url pattern="/management/upload"
@@ -109,7 +109,7 @@
         <security:intercept-url pattern="/wsdl*" access="${security.ssl.api.access}"/>
         <security:intercept-url pattern="**.jsp" access="${security.ssl.api.access}"/>
 
-      </security:filter-invocation-definition-source>
+      </security:filter-security-metadata-source>
     </property>
   </bean>
 

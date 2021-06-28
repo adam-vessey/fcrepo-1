@@ -1,35 +1,33 @@
 package org.fcrepo.server.rest.cxf;
 
-import javax.ws.rs.core.Response;
+import javax.ws.rs.container.ContainerRequestContext;
 
-import org.apache.cxf.jaxrs.model.ClassResourceInfo;
 import org.apache.cxf.jaxrs.utils.HttpUtils;
+import org.apache.cxf.jaxrs.utils.JAXRSUtils;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.message.MessageUtils;
 
-
 public class WadlGenerator extends
-        org.apache.cxf.jaxrs.model.wadl.WadlGenerator {
+org.apache.cxf.jaxrs.model.wadl.WadlGenerator {
 
     public WadlGenerator() {
         super();
     }
 
-    public WadlGenerator(org.apache.cxf.jaxrs.model.wadl.WadlGenerator other) {
-        super(other);
-    }
-
     @Override
-    public Response handleRequest(Message message, ClassResourceInfo resource) {
+    public void filter(ContainerRequestContext context) {
+        Message message = JAXRSUtils.getCurrentMessage();
         if (getPath(message).endsWith("/application.wadl")) {
             String query = (String) message.get(Message.QUERY_STRING);
             if (query == null) {
                 message.put(Message.QUERY_STRING, "_wadl=&_type=xml");
-            } else {
-                if (query.indexOf("_wadl=") < 0) message.put(Message.QUERY_STRING, query + "&_wadl=&_type=xml");
+            }
+            else {
+                if (query.indexOf("_wadl=") < 0)
+                    message.put(Message.QUERY_STRING, query + "&_wadl=&_type=xml");
             }
         }
-        return super.handleRequest(message, resource);
+        super.filter(context);
     }
 
     private static String getPath(Message message) {

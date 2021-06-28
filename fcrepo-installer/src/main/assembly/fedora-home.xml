@@ -406,7 +406,7 @@
       <useProjectArtifact>false</useProjectArtifact>
       <includes>
         <include>org.fcrepo:fcrepo-client-admin:jar:${project.version}</include>
-        <include>org.apache.cxf:cxf-bundle:jar:*</include>
+        <include>org.apache.cxf:cxf-rt-frontend-jaxws:jar:*</include>
       </includes>
       <outputDirectory>/client</outputDirectory>
     </dependencySet>

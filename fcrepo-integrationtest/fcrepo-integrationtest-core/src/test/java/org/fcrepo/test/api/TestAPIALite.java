@@ -4,15 +4,13 @@
  */
 package org.fcrepo.test.api;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import junit.framework.JUnit4TestAdapter;
 
 import org.apache.http.HttpHeaders;
 import org.custommonkey.xmlunit.NamespaceContext;
@@ -30,6 +28,8 @@ import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.w3c.dom.Document;
 
+import junit.framework.JUnit4TestAdapter;
+
 
 
 
@@ -37,7 +37,7 @@ import org.w3c.dom.Document;
  * @author Edwin Shin
  */
 public class TestAPIALite
-        extends FedoraServerTestCase {
+extends FedoraServerTestCase {
 
     private static FedoraClient s_client;
 
@@ -53,7 +53,7 @@ public class TestAPIALite
         // smiley objects
         ingestImageCollectionDemoObjects(s_client);
     }
-    
+
     @AfterClass
     public static void cleanUp() throws Exception {
         purgeDemoObjects(s_client);
@@ -62,7 +62,7 @@ public class TestAPIALite
 
     @Before
     public void setUp() throws Exception {
-        Map<String, String> nsMap = new HashMap<String, String>();
+        Map<String, String> nsMap = new HashMap<>();
         nsMap.put(NS_FEDORA_TYPES_PREFIX, NS_FEDORA_TYPES);
         nsMap.put(OAI_DC.prefix, OAI_DC.uri);
         nsMap.put(DC.prefix, DC.uri);
@@ -81,7 +81,7 @@ public class TestAPIALite
         Document result;
         result = getXMLQueryResult(s_client, "/describe?xml=true");
         assertXpathExists(String.format("/%s:fedoraRepository/%s:repositoryName",
-                                        ACCESS.prefix, ACCESS.prefix), result);
+                ACCESS.prefix, ACCESS.prefix), result);
     }
 
     @Test
@@ -118,26 +118,26 @@ public class TestAPIALite
     public void testGetDisseminationDefault() throws Exception {
         HttpInputStream his =
                 s_client.get("/get/demo:5/fedora-system:3/viewDublinCore", true);
-        String actual = his.getContentType(); 
+        String actual = his.getContentType();
         his.close();
         assertEquals("text/html", actual);
     }
 
-// FIXME: This test intermittently fails. See FCREPO-457
-/*
+    // FIXME: This test intermittently fails. See FCREPO-457
+    /*
     public void testGetDisseminationChained() throws Exception {
         HttpInputStream his =
                 client.get("/get/demo:26/demo:19/getPDF", true);
         assertEquals(his.getContentType(), "application/pdf");
         his.close();
     }
-*/
+     */
 
     @Test
     public void testGetDisseminationUserInput() throws Exception {
         HttpInputStream his =
                 s_client.get("/get/demo:29/demo:27/convertImage?convertTo=gif", true);
-        String actual = his.getContentType(); 
+        String actual = his.getContentType();
         his.close();
         assertEquals("image/gif", actual);
     }
@@ -147,7 +147,7 @@ public class TestAPIALite
         Document result;
         result = getXMLQueryResult(s_client, "/getObjectHistory/demo:5?xml=true");
         assertXpathExists(String.format("/%s:fedoraObjectHistory/%s:objectChangeDate",
-                                        ACCESS.prefix, ACCESS.prefix), result);
+                ACCESS.prefix, ACCESS.prefix), result);
     }
 
     @Test
@@ -155,9 +155,9 @@ public class TestAPIALite
         Document result;
         result = getXMLQueryResult(s_client, "/get/demo:5?xml=true");
         assertXpathEvaluatesTo("demo:5",
-                               String.format("/%s:objectProfile/attribute::pid",
-                                             ACCESS.prefix),
-                               result);
+                String.format("/%s:objectProfile/attribute::pid",
+                        ACCESS.prefix),
+                result);
     }
 
     @Test
@@ -167,7 +167,7 @@ public class TestAPIALite
                 + Models.FEDORA_OBJECT_CURRENT.uri + "'])",
                 ACCESS.prefix, ACCESS.prefix, ACCESS.prefix);
         for (String pid : new String[] { "demo:SmileyPens",
-                                         "demo:SmileyGreetingCard" }) {
+        "demo:SmileyGreetingCard" }) {
             Document result = getXMLQueryResult(s_client, "/get/" + pid + "?xml=true");
             assertXpathEvaluatesTo("1", testExpression, result);
         }
@@ -178,9 +178,9 @@ public class TestAPIALite
         Document result;
         result = getXMLQueryResult(s_client, "/listDatastreams/demo:5?xml=true");
         assertXpathEvaluatesTo("6",
-                               String.format("count(/%s:objectDatastreams/%s:datastream)",
-                                             ACCESS.prefix, ACCESS.prefix),
-                               result);
+                String.format("count(/%s:objectDatastreams/%s:datastream)",
+                        ACCESS.prefix, ACCESS.prefix),
+                result);
     }
 
     @Test
@@ -188,7 +188,7 @@ public class TestAPIALite
         Document result;
         result = getXMLQueryResult(s_client, "/listMethods/demo:5?xml=true");
         assertXpathEvaluatesTo("8", String.format("count(/%s:objectMethods/%s:sDef/%s:method)",
-                                                  ACCESS.prefix, ACCESS.prefix, ACCESS.prefix), result);
+                ACCESS.prefix, ACCESS.prefix, ACCESS.prefix), result);
     }
 
     @Test
@@ -199,6 +199,7 @@ public class TestAPIALite
         String expected = getBaseURL() + "/get/fedora-system:ContentModel-3.0/fedora-system:3/viewObjectProfile/";
         assertEquals(expected, result.getResponseHeader(HttpHeaders.LOCATION).getValue());
     }
+
     @Test
     public void testConcurrentRequests() throws Exception {
         GetCallable[] callables = {

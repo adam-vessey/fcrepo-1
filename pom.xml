@@ -119,7 +119,8 @@
     <activemq.version>5.7.0</activemq.version>
     <akubra.version>0.4.0</akubra.version>
     <axiom.version>1.2.14</axiom.version>
-    <cxf.version>2.7.7</cxf.version>
+<!--     <cxf.version>2.7.7</cxf.version> -->
+    <cxf.version>3.4.4</cxf.version>
     <derby.version>10.9.1.0</derby.version>
     <jersey.version>1.8</jersey.version>
     <sesame.version>2.7.11</sesame.version>
@@ -663,6 +664,17 @@
         <artifactId>cxf-rt-transports-http</artifactId>
         <version>${cxf.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-rs-service-description</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-rs-client</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+
 
       <!-- testing dependencies -->
       <dependency>

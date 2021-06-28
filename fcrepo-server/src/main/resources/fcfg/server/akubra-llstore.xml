@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans>
-
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+   
   <bean name="org.fcrepo.server.storage.lowlevel.ILowlevelStorage"
     class="org.fcrepo.server.storage.lowlevel.akubra.AkubraLowlevelStorageModule">
     <constructor-arg index="0">
@@ -17,7 +19,7 @@
   <bean
     name="org.fcrepo.server.storage.lowlevel.akubra.AkubraLowlevelStorage"
     class="org.fcrepo.server.storage.lowlevel.akubra.AkubraLowlevelStorage"
-    singleton="true">
+    scope="singleton">
     <constructor-arg>
       <description>The store of serialized Fedora objects</description>
       <ref bean="objectStore" />
@@ -40,7 +42,7 @@
   </bean>
 
   <bean name="objectStore" class="org.akubraproject.map.IdMappingBlobStore"
-    singleton="true">
+    scope="singleton">
     <constructor-arg value="urn:example.org:objectStore" />
     <constructor-arg>
       <ref bean="fsObjectStore" />
@@ -51,19 +53,19 @@
   </bean>
 
   <bean name="fsObjectStore" class="org.akubraproject.fs.FSBlobStore"
-    singleton="true">
+    scope="singleton">
     <constructor-arg value="urn:example.org:fsObjectStore" />
     <constructor-arg value="/tmp/objectStore" />
   </bean>
 
   <bean name="fsObjectStoreMapper"
     class="org.fcrepo.server.storage.lowlevel.akubra.HashPathIdMapper"
-    singleton="true">
+    scope="singleton">
     <constructor-arg value="##" />
   </bean>
 
   <bean name="datastreamStore" class="org.akubraproject.map.IdMappingBlobStore"
-    singleton="true">
+    scope="singleton">
     <constructor-arg value="urn:fedora:datastreamStore" />
     <constructor-arg>
       <ref bean="fsDatastreamStore" />
@@ -74,20 +76,20 @@
   </bean>
 
   <bean name="fsDatastreamStore" class="org.akubraproject.fs.FSBlobStore"
-    singleton="true">
+    scope="singleton">
     <constructor-arg value="urn:example.org:fsDatastreamStore" />
     <constructor-arg value="/tmp/datastreamStore" />
   </bean>
 
   <bean name="fsDatastreamStoreMapper"
     class="org.fcrepo.server.storage.lowlevel.akubra.HashPathIdMapper"
-    singleton="true">
+    scope="singleton">
     <constructor-arg value="##" />
   </bean>
 
   <bean name="fedoraStorageHintProvider"
     class="org.fcrepo.server.storage.NullStorageHintsProvider"
-    singleton="true">
+    scope="singleton">
   </bean>
 
 </beans>
