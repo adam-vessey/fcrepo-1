@@ -41,7 +41,8 @@ execWithCmdlineArgs() {
 
 execWithTheseArgs() {
     exec_cmd="exec \"$java\" -Xms64m -Xmx96m \
-            -cp \"$FEDORA_HOME\"/client/bin:\"$FEDORA_HOME\"/client/${fedora-client-jar}:\"$FEDORA_HOME\"/client/${cxf-bundle-jar} \
+            #-cp \"$FEDORA_HOME\"/client/bin:\"$FEDORA_HOME\"/client/${fedora-client-jar}:\"$FEDORA_HOME\"/client/${cxf-bundle-jar} \
+            -cp \"$FEDORA_HOME\"/client/bin:\"$FEDORA_HOME\"/client/${fedora-client-jar} \
             -Djava.endorsed.dirs=\"$FEDORA_HOME\"/client/lib \
             -Djavax.net.ssl.trustStore=\"$FEDORA_HOME\"/client/truststore \
             -Djavax.net.ssl.trustStorePassword=tomcat \

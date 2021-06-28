@@ -351,8 +351,8 @@
       <includes>
         <include>org.fcrepo:fcrepo-common</include>
         <include>org.fcrepo:fcrepo-server</include>
-        <!-- Note: The include statement below needs catch properly defined 
-          (i.e. maven-central) dependencies or they will not be included in the assembly. -->
+<!--         Note: The include statement below needs catch properly defined 
+<!--           (i.e. maven-central) dependencies or they will not be included in the assembly. --> -->
         <include>batik:*</include>
         <include>commons-codec:commons-codec:jar:*</include>
         <include>commons-discovery:commons-discovery:jar:*</include>
@@ -398,15 +398,17 @@
         <include>xerces:xercesImpl:jar:*</include>
         <include>xmlpull:xmlpull:jar:*</include>
         <include>xpp3:xpp3_min:jar:*</include>
+        <include>org.apache.cxf:cxf-rt-frontend-jaxws:jar:*</include>
       </includes>
       <outputDirectory>/client/lib</outputDirectory>
+      <useTransitiveFiltering>true</useTransitiveFiltering>
     </dependencySet>
 
     <dependencySet>
       <useProjectArtifact>false</useProjectArtifact>
       <includes>
         <include>org.fcrepo:fcrepo-client-admin:jar:${project.version}</include>
-        <include>org.apache.cxf:cxf-rt-frontend-jaxws:jar:*</include>
+
       </includes>
       <outputDirectory>/client</outputDirectory>
     </dependencySet>
