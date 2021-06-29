@@ -6,6 +6,8 @@
 package org.fcrepo.client.batch;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -1158,19 +1160,21 @@ implements Constants {
 
     private static class MapperResolver implements EntityResolver {
 
-        private static Map<String, String> map = new HashMap<>();
+        private static Map<String, File> map = new HashMap<>();
         static {
             map.put("http://www.fedora-commons.org/definitions/1/0/api/batchModify-1.1.xsd",
-                    "https://duraspace.org/archive/fedora/definitions/1/0/api/batchModify-1.1.xsd");
+                    new File(Constants.FEDORA_HOME,
+                            "server/xsd/batchModify-1.1.xsd"));
         }
 
         @Override
         public InputSource resolveEntity(String publicId, String systemId)
                 throws SAXException, IOException {
-            String id = map.containsKey(systemId) ? map.get(systemId)
-                    : systemId;
 
-            return new InputSource(load(new URL(id)).getInputStream());
+            InputStream stream = map.containsKey(systemId)
+                    ? new FileInputStream(map.get(systemId)) : load(new URL(
+                            systemId)).getInputStream();
+            return new InputSource(stream);
         }
 
         private HttpURLConnection load(URL url) throws IOException {

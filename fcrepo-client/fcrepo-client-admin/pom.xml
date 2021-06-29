@@ -23,6 +23,7 @@
           <exclude>**/scripts/**</exclude>
         </excludes>
       </resource>
+      
     </resources>
 
     <plugins>
