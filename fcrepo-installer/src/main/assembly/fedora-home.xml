@@ -394,6 +394,7 @@
         <include>ch.qos.logback:logback-classic:jar:*</include>
         <include>wsdl4j:wsdl4j:jar:*</include>
         <include>xerces:xercesImpl:jar:*</include>
+        <include>xml-apis:xml-apis:jar:*</include>
         <include>xmlpull:xmlpull:jar:*</include>
         <include>xpp3:xpp3_min:jar:*</include>
       </includes>
