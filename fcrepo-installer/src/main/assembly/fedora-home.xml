@@ -396,9 +396,17 @@
         <include>xerces:xercesImpl:jar:*</include>
         <include>xmlpull:xmlpull:jar:*</include>
         <include>xpp3:xpp3_min:jar:*</include>
-        <include>org.apache.cxf:cxf-rt-rs-client:jar:*</include>
       </includes>
       <outputDirectory>/client/lib</outputDirectory>
+    </dependencySet>
+
+
+    <dependencySet>
+      <useProjectArtifact>false</useProjectArtifact>
+      <includes>
+        <include>org.apache.cxf:cxf-rt-rs-client:jar:*</include>
+      </includes>
+      <outputDirectory>/client/app</outputDirectory>
       <useTransitiveFiltering>true</useTransitiveFiltering>
     </dependencySet>
 
@@ -406,7 +414,6 @@
       <useProjectArtifact>false</useProjectArtifact>
       <includes>
         <include>org.fcrepo:fcrepo-client-admin:jar:${project.version}</include>
-
       </includes>
       <outputDirectory>/client</outputDirectory>
     </dependencySet>
