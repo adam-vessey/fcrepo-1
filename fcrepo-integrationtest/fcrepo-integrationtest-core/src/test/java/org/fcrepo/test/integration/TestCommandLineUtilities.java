@@ -77,8 +77,7 @@ implements Constants {
     @Test
     public void testFedoraIngestAndPurge() {
         System.out.println("Ingesting object test:1001");
-        ingestFoxmlFile(new File(RESOURCEBASE
-                + "/test1001.xml"));
+        ingestFoxmlFile(new File(RESOURCEBASE, "test1001.xml"));
         String out = sbOut.toString();
         String err = sbErr.toString();
         if (out.indexOf("Ingested pid: test:1001") == -1) {
@@ -98,12 +97,10 @@ implements Constants {
     @Test
     public void testBatchBuildAndBatchIngestAndPurge() throws Exception {
         System.out.println("Building batch objects");
-        batchBuild(new File(RESOURCEBASE
-                + "/templates/foxml-template.xml"),
-                new File(RESOURCEBASE
-                        + "/batch-objs"),
+        batchBuild(new File(RESOURCEBASE, "templates/foxml-template.xml"),
+                new File(RESOURCEBASE, "batch-objs"),
                 buildDir,
-                new File(LOGDIR + "/build.log"));
+                new File(LOGDIR, "build.log"));
         String err = sbErr.toString();
         assertEquals(err,
                 true,
@@ -111,7 +108,7 @@ implements Constants {
                 .indexOf("10 Fedora FOXML XML documents successfully created") != -1);
         System.out.println("Ingesting batch objects");
         batchIngest(buildDir,
-                new File(LOGDIR + "/junit_ingest.log"));
+                new File(LOGDIR, "junit_ingest.log"));
         err = sbErr.toString();
         assertThat(
                 "Response contains expected string re: objects successfully ingested",
@@ -129,13 +126,10 @@ implements Constants {
     @Test
     public void testBatchBuildIngestAndPurge() throws Exception {
         System.out.println("Building and Ingesting batch objects");
-        batchBuildIngest(new File(RESOURCEBASE
-                + "/templates/foxml-template.xml"),
-                new File(RESOURCEBASE
-                        + "/batch-objs"),
+        batchBuildIngest(new File(RESOURCEBASE, "templates/foxml-template.xml"),
+                new File(RESOURCEBASE, "batch-objs"),
                 buildDir,
-                new File(LOGDIR
-                        + "/junit_buildingest.log"));
+                new File(LOGDIR, "junit_buildingest.log"));
         String err = sbErr.toString();
         assertThat("Response contains expected string re: FOXML XML documents.",
                 err, CoreMatchers.containsString(
@@ -158,9 +152,8 @@ implements Constants {
         // Note: test will fail if default control group for DC datastreams (fedora.fcfg) is not X
         // as the modify script specifies control group "X" when modifying DC
         System.out.println("Running batch modify of objects");
-        batchModify(new File(RESOURCEBASE
-                + "/modify-batch-directives.xml"),
-                new File(LOGDIR + "/junit_modify.log"));
+        batchModify(new File(RESOURCEBASE, "modify-batch-directives.xml"),
+                new File(LOGDIR, "junit_modify.log"));
         String out = sbOut.toString();
         String err = sbErr.toString();
         if (out.indexOf("25 modify directives successfully processed.") == -1) {
@@ -189,13 +182,10 @@ implements Constants {
                         : "src/test/resources/";
 
         /* first ingest the objects */
-        batchBuildIngest(new File(RESOURCEBASE
-                + "/templates/foxml-template.xml"),
-                new File(RESOURCEBASE
-                        + "/batch-objs"),
+        batchBuildIngest(new File(RESOURCEBASE, "templates/foxml-template.xml"),
+                new File(RESOURCEBASE, "batch-objs"),
                 buildDir,
-                new File(LOGDIR
-                        + "/junit_buildingest.log"));
+                new File(LOGDIR, "junit_buildingest.log"));
         /* try to purge from a bogus file */
         batchPurge(new File("/bogus/file"));
         String out = sbOut.toString();
@@ -205,7 +195,7 @@ implements Constants {
                 err, CoreMatchers.containsString(
                         "java.io.FileNotFoundException"));
         /* try to purge the objects from the valid file */
-        batchPurge(new File(base + "/test-objects/test-batch-purge-file.txt"));
+        batchPurge(new File(base, "test-objects/test-batch-purge-file.txt"));
         out = sbOut.toString();
         err = sbErr.toString();
         assertThat(
@@ -213,7 +203,7 @@ implements Constants {
                 out, CoreMatchers.containsString(
                         "10 objects successfully purged."));
         /* make sure they're gone */
-        batchPurge(new File(base + "/test-objects/test-batch-purge-file.txt"));
+        batchPurge(new File(base, "test-objects/test-batch-purge-file.txt"));
         out = sbOut.toString();
         err = sbErr.toString();
         assertThat(
@@ -231,8 +221,7 @@ implements Constants {
     public void testExport() throws Exception {
         System.out.println("Testing fedora-export");
         System.out.println("Ingesting object test:1001");
-        ingestFoxmlFile(new File(RESOURCEBASE
-                + "/test1001.xml"));
+        ingestFoxmlFile(new File(RESOURCEBASE, "test1001.xml"));
         String out = sbOut.toString();
         String err = sbErr.toString();
         if (out.indexOf("Ingested pid: test:1001") == -1) {
@@ -242,7 +231,7 @@ implements Constants {
         assertEquals(true, out.indexOf("Ingested pid: test:1001") != -1);
 
         File outFile =
-                new File(RESOURCEBASE + "/test_1001.xml");
+                new File(RESOURCEBASE, "test_1001.xml");
         if (outFile.exists()) {
             outFile.delete();
         }
@@ -252,7 +241,7 @@ implements Constants {
         err = sbErr.toString();
         assertEquals(out.indexOf("Exported test:1001") != -1, true);
         File outFile2 =
-                new File(RESOURCEBASE + "/test_1001.xml");
+                new File(RESOURCEBASE, "test_1001.xml");
         assertEquals(outFile2.exists(), true);
         System.out.println("Deleting exported file");
         if (outFile2.exists()) {
@@ -272,11 +261,11 @@ implements Constants {
                         : "src/test/resources/";
 
         File validDir =
-                new File(base + "XACMLTestPolicies/valid-policies");
+                new File(base, "XACMLTestPolicies/valid-policies");
         traverseAndValidate(validDir, true);
 
         File invalidDir =
-                new File(base + "XACMLTestPolicies/invalid-policies");
+                new File(base, "XACMLTestPolicies/invalid-policies");
         traverseAndValidate(invalidDir, false);
 
         System.out.println("Validate Policies test succeeded");
@@ -471,6 +460,7 @@ implements Constants {
 
     @Before
     public void setUp() throws Exception {
+        System.out.println("Using RESOURCEBASE: " + RESOURCEBASE);
         sbOut = new ByteArrayOutputStream();
         sbErr = new ByteArrayOutputStream();
 

@@ -679,7 +679,7 @@ public class FOXMLContentHandler
                                                          "CREATED"));
         } else if (localName.equals("serviceInputMap")) {
             m_diss.dsBindMap = new DSBindingMap();
-            m_dsBindings = new ArrayList<DSBinding>();
+            m_dsBindings = new ArrayList<>();
             // Note that the dsBindMapID is not really necessary from the
             // FOXML standpoint, but it was necessary in METS since the
             // structMap was outside the disseminator.
@@ -938,9 +938,9 @@ public class FOXMLContentHandler
         m_objPropertyName = "";
         m_readingBinaryContent = false; // indicates reading base64-encoded content
         m_inXMLMetadata = false;
-        m_prefixMap = new HashMap<String, String>();
-        m_localPrefixMap = new HashMap<String, String>();
-        m_prefixList = new ArrayList<String>();
+        m_prefixMap = new HashMap<>();
+        m_localPrefixMap = new HashMap<>();
+        m_prefixList = new ArrayList<>();
 
         // temporary variables for processing datastreams
         m_dsId = "";
