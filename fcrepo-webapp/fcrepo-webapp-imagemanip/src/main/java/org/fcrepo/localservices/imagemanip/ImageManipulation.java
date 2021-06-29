@@ -1,5 +1,5 @@
 /* The contents of this file are subject to the license and copyright terms
- * detailed in the license directory at the root of the source tree (also 
+ * detailed in the license directory at the root of the source tree (also
  * available online at http://fedora-commons.org/license/).
  */
 
@@ -7,8 +7,8 @@
  * Image manipulations (with the exception of the watermarking function)
  * are handled by ImageJ, a Java API written for image processing.
  *
- * Image encoding and decoding is handled by JAI, the Java Advanced Imaging
- * API, with the exception of GIF encoding, which is handled by ImageJ.
+ * Image encoding and decoding is handled via ImageIO, with the exception of
+ * GIF encoding, which is handled by ImageJ.
  *
  *  ImageJ Information:
  *
@@ -48,16 +48,12 @@
  */
 package org.fcrepo.localservices.imagemanip;
 
-import ij.ImagePlus;
-import ij.io.FileInfo;
-import ij.io.GifEncoder;
-import ij.process.ImageProcessor;
-import ij.process.MedianCut;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -65,7 +61,7 @@ import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.media.jai.JAI;
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -82,32 +78,30 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.params.CoreConnectionPNames;
 
-import com.sun.media.jai.codec.BMPEncodeParam;
-import com.sun.media.jai.codec.ImageCodec;
-import com.sun.media.jai.codec.ImageEncodeParam;
-import com.sun.media.jai.codec.JPEGEncodeParam;
-import com.sun.media.jai.codec.MemoryCacheSeekableStream;
-import com.sun.media.jai.codec.PNGEncodeParam;
-import com.sun.media.jai.codec.TIFFEncodeParam;
+import ij.ImagePlus;
+import ij.io.FileInfo;
+import ij.io.GifEncoder;
+import ij.process.ImageProcessor;
+import ij.process.MedianCut;
 
 /**
  * ImageManipulation is a Java servlet that takes a URL of an image as a param
  * and based on other given parameters, can perform a variety of image related
  * manipulations on the object.
- * 
+ *
  * <p>After the image is manipulated, it is then sent back as an image/type
  * object to the calling parent, most often a browser or an HTML img tag.
- * 
+ *
  * @author Theodore Serbinski
  */
 public class ImageManipulation
-        extends HttpServlet {
+extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    
+
     private static final Logger LOGGER =
             Logger.getLogger(
-                "org.apache.catalina.core.ContainerBase.[Catalina].[localhost]");
+                    "org.apache.catalina.core.ContainerBase.[Catalina].[localhost]");
 
     private String inputMimeType;
 
@@ -118,7 +112,7 @@ public class ImageManipulation
 
     private PoolingClientConnectionManager getConnectionManager() {
         PoolingClientConnectionManager cm =
-            new PoolingClientConnectionManager();
+                new PoolingClientConnectionManager();
         cm.getSchemeRegistry().register(
                 new Scheme("https", 443, SSLSocketFactory.getSocketFactory()));
         cm.getSchemeRegistry().register(
@@ -137,7 +131,7 @@ public class ImageManipulation
 
     /**
      * Method automatically called by browser to handle image manipulations.
-     * 
+     *
      * @param req
      *        Browser request to servlet res Response sent back to browser after
      *        image manipulation
@@ -148,7 +142,7 @@ public class ImageManipulation
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-    	System.setProperty("java.awt.headless", "true");
+        System.setProperty("java.awt.headless", "true");
         // collect all possible parameters for servlet
         String url = req.getParameter("url");
         String op = req.getParameter("op");
@@ -189,10 +183,10 @@ public class ImageManipulation
                 int y = img.getHeight() - fm.getHeight();
                 g.setColor(new Color(180, 180, 180));
                 g.fill3DRect(x - 10,
-                             y - fm.getHeight() - 4,
-                             stringWidth + 20,
-                             fm.getHeight() + 12,
-                             true);
+                        y - fm.getHeight() - 4,
+                        stringWidth + 20,
+                        fm.getHeight() + 12,
+                        true);
                 g.setColor(new Color(100, 100, 100));
                 g.drawString(wmText, x + 2, y + 2);
                 g.setColor(new Color(240, 240, 240));
@@ -263,7 +257,7 @@ public class ImageManipulation
      * input image is not a gif, jpg, tiff, bmp, or png (according to the http
      * response header), or some other kind of error occurs while reading the
      * stream from the remote host, a ServletException is thrown.
-     * 
+     *
      * @param url
      *        The location of the input image.
      * @return Image The image object, if successful.
@@ -300,10 +294,7 @@ public class ImageManipulation
                 // commonly supported with this
                 // mime type, even though it's not
                 // an IANA-registered image type
-                return JAI.create("stream",
-                                  new MemoryCacheSeekableStream(response
-                                          .getEntity().getContent()))
-                        .getAsBufferedImage();
+                return ImageIO.read(response.getEntity().getContent());
             } else {
                 throw new ServletException("Source image was not a gif, png, "
                         + "bmp, tiff, or jpg.");
@@ -320,8 +311,8 @@ public class ImageManipulation
     }
 
     private void outputImage(ImageProcessor ip,
-                             OutputStream out,
-                             String outputMimeType) throws Exception {
+            OutputStream out,
+            String outputMimeType) throws Exception {
         if (outputMimeType.equals("image/gif")) {
             if (!alreadyConvertedToRGB) {
                 ip = ip.convertToRGB();
@@ -335,37 +326,37 @@ public class ImageManipulation
             byte pixels[] = (byte[]) imp.getProcessor().getPixels();
             GifEncoder ge =
                     new GifEncoder(fi.width,
-                                   fi.height,
-                                   pixels,
-                                   fi.reds,
-                                   fi.greens,
-                                   fi.blues);
+                            fi.height,
+                            pixels,
+                            fi.reds,
+                            fi.greens,
+                            fi.blues);
             ge.write(out);
         } else {
-            ImageEncodeParam param = null;
             String format = null;
             if (outputMimeType.equals("image/jpeg")) {
-                param = new JPEGEncodeParam();
                 format = "JPEG";
             } else if (outputMimeType.equals("image/tiff")) {
-                param = new TIFFEncodeParam();
                 format = "TIFF";
             } else if (outputMimeType.equals("image/bmp")) {
-                param = new BMPEncodeParam();
                 format = "BMP";
             } else if (outputMimeType.equals("image/png")) {
-                param = new PNGEncodeParam.RGB();
                 format = "PNG";
             }
-            ImageCodec.createImageEncoder(format, out, param).encode(JAI
-                    .create("AWTImage", ip.createImage()));
+            Image base_image = ip.createImage();
+            BufferedImage image = new BufferedImage(base_image.getWidth(null), base_image.getHeight(null),
+                    BufferedImage.TYPE_INT_ARGB);
+            Graphics2D bg = image.createGraphics();
+            bg.drawImage(base_image, 0, 0, null);
+            bg.dispose();
+            ImageIO.write(image, format, out);
         }
     }
 
     /**
      * Resizes an image to the supplied new width in pixels. The height is
      * reduced proportionally to the new width.
-     * 
+     *
      * @param ip
      *        The image to resize newWidth The width in pixels to resize the
      *        image to
@@ -397,7 +388,7 @@ public class ImageManipulation
     /**
      * Zooms either in or out of an image by a supplied amount. The zooming
      * occurs from the center of the image.
-     * 
+     *
      * @param ip
      *        The image to zoom zoomAmt The amount to zoom the image. 0 <
      *        zoomAmt < 1 : zoom out 1 = zoomAmt : original image 1 < zoomAmt :
@@ -422,9 +413,9 @@ public class ImageManipulation
 
                     // set a ROI around the image, minus the extra whitespace
                     ip.setRoi(Math.round(imgWidth / 2 - imgWidth * zoom / 2),
-                              Math.round(imgHeight / 2 - imgHeight * zoom / 2),
-                              Math.round(imgWidth * zoom),
-                              Math.round(imgHeight * zoom));
+                            Math.round(imgHeight / 2 - imgHeight * zoom / 2),
+                            Math.round(imgWidth * zoom),
+                            Math.round(imgHeight * zoom));
                     ip = ip.crop();
                 }
 
@@ -441,7 +432,7 @@ public class ImageManipulation
 
     /**
      * Adjusts the brightness of an image by a supplied amount.
-     * 
+     *
      * @param ip
      *        The image to adjust the brightness of brightAmt The amount to
      *        adjust the brightness of the image by 0 <= brightAmt < 1 : darkens
@@ -473,7 +464,7 @@ public class ImageManipulation
 
     /**
      * Converts an image to gray scale.
-     * 
+     *
      * @param ip
      *        The image to convert to grayscale
      * @return The image converted to grayscale
@@ -486,7 +477,7 @@ public class ImageManipulation
 
     /**
      * Crops an image with supplied starting point and ending point.
-     * 
+     *
      * @param ip
      *        The image to crop cropX The starting x position; x=0 corresponds
      *        to left side of image cropY The starting y position; y=0
@@ -496,10 +487,10 @@ public class ImageManipulation
      * @return The image cropped
      */
     public ImageProcessor crop(ImageProcessor ip,
-                               String cropX,
-                               String cropY,
-                               String cropWidth,
-                               String cropHeight) {
+            String cropX,
+            String cropY,
+            String cropWidth,
+            String cropHeight) {
         if (cropX != null && cropY != null) {
             try {
                 int x = Integer.parseInt(cropX);

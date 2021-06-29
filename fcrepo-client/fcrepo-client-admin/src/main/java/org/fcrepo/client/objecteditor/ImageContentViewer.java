@@ -1,5 +1,5 @@
 /* The contents of this file are subject to the license and copyright terms
- * detailed in the license directory at the root of the source tree (also 
+ * detailed in the license directory at the root of the source tree (also
  * available online at http://fedora-commons.org/license/).
  */
 package org.fcrepo.client.objecteditor;
@@ -7,20 +7,17 @@ package org.fcrepo.client.objecteditor;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.media.jai.JAI;
-
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
-import com.sun.media.jai.codec.MemoryCacheSeekableStream;
-
 /**
  * Views content of common image formats in a JComponent.
  */
 public class ImageContentViewer
-        extends ContentViewer {
+extends ContentViewer {
 
     private JLabel m_label;
 
@@ -74,11 +71,7 @@ public class ImageContentViewer
     @Override
     public void setContent(InputStream data) throws IOException {
         try {
-            ImageIcon image =
-                    new ImageIcon(JAI
-                            .create("stream",
-                                    new MemoryCacheSeekableStream(data))
-                            .getAsBufferedImage());
+            ImageIcon image = new ImageIcon(ImageIO.read(data));
             if (m_pane == null) {
                 m_label = new JLabel(image);
                 m_pane = new JScrollPane(m_label);

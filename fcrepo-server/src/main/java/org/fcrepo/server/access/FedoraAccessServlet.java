@@ -56,7 +56,7 @@ import org.slf4j.LoggerFactory;
  * GetDatastreamDissemination of the Fedora Access LITE (API-A-LITE) interface
  * using a java servlet front end. The syntax defined by API-A-LITE defines
  * three bindings for these methods:
- * 
+ *
  * GetDissemination URL syntax:
  * <p>
  * protocol://hostname:port/fedora/get/PID/sDefPID/methodName[/dateTime][?
@@ -82,8 +82,8 @@ import org.slf4j.LoggerFactory;
  * <li>parmArray - optional array of method parameters consisting of name/value
  * pairs in the form parm1=value1&amp;parm2=value2...</li>
  * </ul>
- * 
-  * GetObjectProfile URL syntax:
+ *
+ * GetObjectProfile URL syntax:
  * <p>
  * protocol://hostname:port/fedora/get/PID[/dateTime][?xml=BOOLEAN]
  * </p>
@@ -108,7 +108,7 @@ import org.slf4j.LoggerFactory;
  * value of "true" indicates a return type of text/xml; the absence of the xml
  * parameter or a value of "false" indicates format is to be text/html.</li>
  * </ul>
- * 
+ *
  * GetDatastreamDissemination URL syntax:
  * <p>
  * protocol://hostname:port/fedora/get/PID/DSID[/dateTime]
@@ -131,8 +131,8 @@ import org.slf4j.LoggerFactory;
  * @author Ross Wayland
  */
 public class FedoraAccessServlet
-        extends SpringAccessServlet
-        implements Constants {
+extends SpringAccessServlet
+implements Constants {
 
     private static final Logger logger =
             LoggerFactory.getLogger(FedoraAccessServlet.class);
@@ -225,21 +225,21 @@ public class FedoraAccessServlet
                                 "ObjectProfile Request Syntax Error: DateTime value "
                                         + "of \""
                                         + URIArray[6]
-                                        + "\" is not a valid DateTime format. "
-                                        + " <br></br> The expected format for DateTime is \""
-                                        + "YYYY-MM-DDTHH:MM:SS.SSSZ\".  "
-                                        + " <br></br> The expected syntax for "
-                                        + "ObjectProfile requests is: \""
-                                        + URIArray[0]
-                                        + "//"
-                                        + URIArray[2]
-                                        + "/"
-                                        + URIArray[3]
-                                        + "/"
-                                        + URIArray[4]
-                                        + "/PID[/dateTime] \"  ."
-                                        + " <br></br> Submitted request was: \""
-                                        + requestURI + "\"  .  ";
+                                                + "\" is not a valid DateTime format. "
+                                                + " <br></br> The expected format for DateTime is \""
+                                                + "YYYY-MM-DDTHH:MM:SS.SSSZ\".  "
+                                                + " <br></br> The expected syntax for "
+                                                + "ObjectProfile requests is: \""
+                                                + URIArray[0]
+                                                        + "//"
+                                                        + URIArray[2]
+                                                                + "/"
+                                                                + URIArray[3]
+                                                                        + "/"
+                                                                        + URIArray[4]
+                                                                                + "/PID[/dateTime] \"  ."
+                                                                                + " <br></br> Submitted request was: \""
+                                                                                + requestURI + "\"  .  ";
                         logger.warn(message);
                         throw new ServletException("from FedoraAccessServlet"
                                 + message);
@@ -279,20 +279,20 @@ public class FedoraAccessServlet
                                 "GetDatastreamDissemination Request Syntax Error: DateTime value "
                                         + "of \""
                                         + URIArray[7]
-                                        + "\" is not a valid DateTime format. "
-                                        + " <br></br> The expected format for DateTime is \""
-                                        + "YYYY-MM-DDTHH:MM:SS.SSSZ\".  "
-                                        + " <br></br> The expected syntax for GetDatastreamDissemination requests is: \""
-                                        + URIArray[0]
-                                        + "//"
-                                        + URIArray[2]
-                                        + "/"
-                                        + URIArray[3]
-                                        + "/"
-                                        + URIArray[4]
-                                        + "/PID/dsID[/dateTime] \"  "
-                                        + " <br></br> Submitted request was: \""
-                                        + requestURI + "\"  .  ";
+                                                + "\" is not a valid DateTime format. "
+                                                + " <br></br> The expected format for DateTime is \""
+                                                + "YYYY-MM-DDTHH:MM:SS.SSSZ\".  "
+                                                + " <br></br> The expected syntax for GetDatastreamDissemination requests is: \""
+                                                + URIArray[0]
+                                                        + "//"
+                                                        + URIArray[2]
+                                                                + "/"
+                                                                + URIArray[3]
+                                                                        + "/"
+                                                                        + URIArray[4]
+                                                                                + "/PID/dsID[/dateTime] \"  "
+                                                                                + " <br></br> Submitted request was: \""
+                                                                                + requestURI + "\"  .  ";
                         logger.warn(message);
                         throw new ServletException("from FedoraAccessServlet"
                                 + message);
@@ -311,20 +311,20 @@ public class FedoraAccessServlet
                             "Dissemination Request Syntax Error: DateTime value "
                                     + "of \""
                                     + URIArray[8]
-                                    + "\" is not a valid DateTime format. "
-                                    + " <br></br> The expected format for DateTime is \""
-                                    + "YYYY-MM-DDTHH:MM:SS.SSS\".  "
-                                    + " <br></br> The expected syntax for Dissemination requests is: \""
-                                    + URIArray[0]
-                                    + "//"
-                                    + URIArray[2]
-                                    + "/"
-                                    + URIArray[3]
-                                    + "/"
-                                    + URIArray[4]
-                                    + "/PID/sDefPID/methodName[/dateTime][?ParmArray] \"  "
-                                    + " <br></br> Submitted request was: \""
-                                    + requestURI + "\"  .  ";
+                                            + "\" is not a valid DateTime format. "
+                                            + " <br></br> The expected format for DateTime is \""
+                                            + "YYYY-MM-DDTHH:MM:SS.SSS\".  "
+                                            + " <br></br> The expected syntax for Dissemination requests is: \""
+                                            + URIArray[0]
+                                                    + "//"
+                                                    + URIArray[2]
+                                                            + "/"
+                                                            + URIArray[3]
+                                                                    + "/"
+                                                                    + URIArray[4]
+                                                                            + "/PID/sDefPID/methodName[/dateTime][?ParmArray] \"  "
+                                                                            + " <br></br> Submitted request was: \""
+                                                                            + requestURI + "\"  .  ";
                     logger.warn(message);
                     throw new ServletException("from FedoraAccessServlet"
                             + message);
@@ -345,15 +345,15 @@ public class FedoraAccessServlet
                         "Dissemination Request Syntax Error: The expected "
                                 + "syntax for Dissemination requests is: \""
                                 + URIArray[0]
-                                + "//"
-                                + URIArray[2]
-                                + "/"
-                                + URIArray[3]
-                                + "/"
-                                + URIArray[4]
-                                + "/PID/sDefPID/methodName[/dateTime][?ParmArray] \"  "
-                                + " <br></br> Submitted request was: \""
-                                + requestURI + "\"  .  ";
+                                        + "//"
+                                        + URIArray[2]
+                                                + "/"
+                                                + URIArray[3]
+                                                        + "/"
+                                                        + URIArray[4]
+                                                                + "/PID/sDefPID/methodName[/dateTime][?ParmArray] \"  "
+                                                                + " <br></br> Submitted request was: \""
+                                                                + requestURI + "\"  .  ";
                 logger.warn(message);
                 throw new ServletException("from FedoraAccessServlet" + message);
                 /*
@@ -368,12 +368,12 @@ public class FedoraAccessServlet
         } else {
             // Bad syntax; redirect to syntax documentation page.
             response
-                    .sendRedirect("/userdocs/client/browser/apialite/index.html");
+            .sendRedirect("/userdocs/client/browser/apialite/index.html");
             return;
         }
 
         // Separate out servlet parameters from method parameters
-        Hashtable<String, String> h_userParms = new Hashtable<String, String>();
+        Hashtable<String, String> h_userParms = new Hashtable<>();
         for (Enumeration<?> e = request.getParameterNames(); e
                 .hasMoreElements();) {
             String name = URLDecoder.decode((String) e.nextElement(), "UTF-8");
@@ -407,13 +407,13 @@ public class FedoraAccessServlet
 
                 Context context =
                         ReadOnlyContext.getContext(HTTP_REQUEST.REST.uri,
-                                                   request);
+                                request);
                 getObjectProfile(context,
-                                 PID,
-                                 asOfDateTime,
-                                 xml,
-                                 request,
-                                 response);
+                        PID,
+                        asOfDateTime,
+                        xml,
+                        request,
+                        response);
 
                 logger.debug("Finished servicing getObjectProfile request");
             } else if (isGetDisseminationRequest) {
@@ -423,15 +423,15 @@ public class FedoraAccessServlet
 
                 Context context =
                         ReadOnlyContext.getContext(HTTP_REQUEST.REST.uri,
-                                                   request);
+                                request);
                 getDissemination(context,
-                                 PID,
-                                 sDefPID,
-                                 methodName,
-                                 userParms,
-                                 asOfDateTime,
-                                 response,
-                                 request);
+                        PID,
+                        sDefPID,
+                        methodName,
+                        userParms,
+                        asOfDateTime,
+                        response,
+                        request);
 
                 logger.debug("Finished servicing getDissemination request");
             } else if (isGetDatastreamDisseminationRequest) {
@@ -441,13 +441,13 @@ public class FedoraAccessServlet
 
                 Context context =
                         ReadOnlyContext.getContext(HTTP_REQUEST.REST.uri,
-                                                   request);
+                                request);
                 getDatastreamDissemination(context,
-                                           PID,
-                                           dsID,
-                                           asOfDateTime,
-                                           response,
-                                           request);
+                        PID,
+                        dsID,
+                        asOfDateTime,
+                        response,
+                        request);
 
                 logger.debug("Finished servicing getDatastreamDissemination "
                         + "request");
@@ -481,27 +481,27 @@ public class FedoraAccessServlet
             logger.error("Authorization failed for request: " + requestURI
                     + " (actionLabel=" + actionLabel + ")", ae);
             throw RootException.getServletException(ae,
-                                                    request,
-                                                    actionLabel,
-                                                    EMPTY_STRING_ARRAY);
+                    request,
+                    actionLabel,
+                    EMPTY_STRING_ARRAY);
         } catch (Throwable th) {
             logger.error("Unexpected error servicing API-A request", th);
             throw new InternalError500Exception("",
-                                                th,
-                                                request,
-                                                actionLabel,
-                                                "",
-                                                EMPTY_STRING_ARRAY);
+                    th,
+                    request,
+                    actionLabel,
+                    "",
+                    EMPTY_STRING_ARRAY);
         }
     }
 
     public void getObjectProfile(Context context,
-                                 String PID,
-                                 Date asOfDateTime,
-                                 boolean xml,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response)
-            throws ServerException {
+            String PID,
+            Date asOfDateTime,
+            boolean xml,
+            HttpServletRequest request,
+            HttpServletResponse response)
+                    throws ServerException {
 
         OutputStreamWriter out = null;
         Date versDateTime = asOfDateTime;
@@ -516,10 +516,10 @@ public class FedoraAccessServlet
                 // Object Profile found.
                 // Serialize the ObjectProfile object into XML
                 new ProfileSerializerThread(context,
-                                            PID,
-                                            objProfile,
-                                            versDateTime,
-                                            pw).start();
+                        PID,
+                        objProfile,
+                        versDateTime,
+                        pw).start();
                 if (xml) {
                     // Return results as raw XML
                     response.setContentType(CONTENT_TYPE_XML);
@@ -529,7 +529,7 @@ public class FedoraAccessServlet
                     // encoded characters to OutputStreamWriter.
                     out =
                             new OutputStreamWriter(response.getOutputStream(),
-                                                   "UTF-8");
+                                    "UTF-8");
                     char[] buf = new char[BUF];
                     int len = 0;
                     while ((len = pr.read(buf, 0, BUF)) != -1) {
@@ -541,17 +541,17 @@ public class FedoraAccessServlet
                     response.setContentType(CONTENT_TYPE_HTML);
                     out =
                             new OutputStreamWriter(response.getOutputStream(),
-                                                   "UTF-8");
+                                    "UTF-8");
                     File xslFile =
                             new File(m_server.getHomeDir(),
-                                     "access/viewObjectProfile.xslt");
+                                    "access/viewObjectProfile.xslt");
                     Templates template =
                             XmlTransformUtility.getTemplates(xslFile);
                     Transformer transformer = template.newTransformer();
                     transformer.setParameter("fedora", context
                             .getEnvironmentValue(FEDORA_APP_CONTEXT_NAME));
                     transformer.transform(new StreamSource(pr),
-                                          new StreamResult(out));
+                            new StreamResult(out));
                 }
                 out.flush();
 
@@ -581,19 +581,19 @@ public class FedoraAccessServlet
     }
 
     public void getDatastreamDissemination(Context context,
-                                           String PID,
-                                           String dsID,
-                                           Date asOfDateTime,
-                                           HttpServletResponse response,
-                                           HttpServletRequest request)
-            throws IOException, ServerException {
+            String PID,
+            String dsID,
+            Date asOfDateTime,
+            HttpServletResponse response,
+            HttpServletRequest request)
+                    throws IOException, ServerException {
         ServletOutputStream out = null;
         MIMETypedStream dissemination = null;
         dissemination =
                 m_access.getDatastreamDissemination(context,
-                                                    PID,
-                                                    dsID,
-                                                    asOfDateTime);
+                        PID,
+                        dsID,
+                        asOfDateTime);
         try {
             // testing to see what's in request header that might be of interest
             if (logger.isDebugEnabled()) {
@@ -622,6 +622,7 @@ public class FedoraAccessServlet
                     }
                 }
 
+                logger.info("GDD, redirecting to " + location);
                 response.sendRedirect(location);
             } else {
                 int status = dissemination.getStatusCode();
@@ -634,11 +635,11 @@ public class FedoraAccessServlet
                     for (int i = 0; i < headerArray.length; i++) {
                         if (headerArray[i].name != null
                                 && !headerArray[i].name
-                                        .equalsIgnoreCase("transfer-encoding")
+                                .equalsIgnoreCase("transfer-encoding")
                                 && !headerArray[i].name
-                                        .equalsIgnoreCase("content-type")) {
+                                .equalsIgnoreCase("content-type")) {
                             response.addHeader(headerArray[i].name,
-                                               headerArray[i].value);
+                                    headerArray[i].value);
                             logger.debug(
                                     "THIS WAS ADDED TO FEDORASERVLET RESPONSE HEADER FROM ORIGINATING PROVIDER {} : {}",
                                     headerArray[i].name, headerArray[i].value);
@@ -693,23 +694,23 @@ public class FedoraAccessServlet
      *         If an error occurs in the Access Subsystem.
      */
     public void getDissemination(Context context,
-                                 String PID,
-                                 String sDefPID,
-                                 String methodName,
-                                 Property[] userParms,
-                                 Date asOfDateTime,
-                                 HttpServletResponse response,
-                                 HttpServletRequest request)
-            throws IOException, ServerException {
+            String PID,
+            String sDefPID,
+            String methodName,
+            Property[] userParms,
+            Date asOfDateTime,
+            HttpServletResponse response,
+            HttpServletRequest request)
+                    throws IOException, ServerException {
         ServletOutputStream out = null;
         MIMETypedStream dissemination = null;
         dissemination =
                 m_access.getDissemination(context,
-                                          PID,
-                                          sDefPID,
-                                          methodName,
-                                          userParms,
-                                          asOfDateTime);
+                        PID,
+                        sDefPID,
+                        methodName,
+                        userParms,
+                        asOfDateTime);
         out = response.getOutputStream();
         try {
             // testing to see what's in request header that might be of interest
@@ -738,7 +739,7 @@ public class FedoraAccessServlet
                         break;
                     }
                 }
-
+                logger.info("GD, redirecting to " + location);
                 response.sendRedirect(location);
             } else {
                 response.setContentType(dissemination.getMIMEType());
@@ -747,11 +748,11 @@ public class FedoraAccessServlet
                     for (int i = 0; i < headerArray.length; i++) {
                         if (headerArray[i].name != null
                                 && !headerArray[i].name
-                                        .equalsIgnoreCase("transfer-encoding")
+                                .equalsIgnoreCase("transfer-encoding")
                                 && !headerArray[i].name
-                                        .equalsIgnoreCase("content-type")) {
+                                .equalsIgnoreCase("content-type")) {
                             response.addHeader(headerArray[i].name,
-                                               headerArray[i].value);
+                                    headerArray[i].value);
                             logger.debug(
                                     "THIS WAS ADDED TO FEDORASERVLET  RESPONSE HEADER FROM ORIGINATING  PROVIDER {} : {}", headerArray[i].name, headerArray[i].value);
                         }
@@ -782,7 +783,7 @@ public class FedoraAccessServlet
      * </p>
      */
     public class ProfileSerializerThread
-            extends Thread {
+    extends Thread {
 
         private PipedWriter pw = null;
 
@@ -807,10 +808,10 @@ public class FedoraAccessServlet
          *        A PipedWriter to which the serialization info is written.
          */
         public ProfileSerializerThread(Context context,
-                                       String PID,
-                                       ObjectProfile objProfile,
-                                       Date versDateTime,
-                                       PipedWriter pw) {
+                String PID,
+                ObjectProfile objProfile,
+                Date versDateTime,
+                PipedWriter pw) {
             this.pw = pw;
             this.PID = PID;
             this.objProfile = objProfile;
@@ -858,11 +859,11 @@ public class FedoraAccessServlet
 
                     String cDate =
                             DateUtility
-                                    .convertDateToString(objProfile.objectCreateDate);
+                            .convertDateToString(objProfile.objectCreateDate);
                     pw.write("<objCreateDate>" + cDate + "</objCreateDate>");
                     String mDate =
                             DateUtility
-                                    .convertDateToString(objProfile.objectLastModDate);
+                            .convertDateToString(objProfile.objectLastModDate);
                     pw.write("<objLastModDate>" + mDate + "</objLastModDate>");;
 
                     pw.write("<objDissIndexViewURL>");

@@ -382,8 +382,6 @@
         <include>org.codehaus.woodstox:woodstox-core-asl:jar:*</include>
         <include>org.apache.geronimo.specs:geronimo-annotation_1.0_spec:jar:*</include>
         <include>org.codehaus.woodstox:stax2-api:jar:*</include>
-        <include>org.fcrepo:jai_codec:jar:*</include>
-        <include>org.fcrepo:jai_core:jar:*</include>
         <include>org.fcrepo:mulgara-core:jar:*</include>
         <include>org.fcrepo:saxon:jar:*</include>
         <include>org.jboss.security:jboss-sunxacml:jar:*</include>

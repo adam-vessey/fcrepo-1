@@ -72,8 +72,7 @@ implements FedoraTestConstants {
         if (System.getProperty("fedora.baseURL") != null) {
             return System.getProperty("fedora.baseURL");
         } else {
-            return getProtocol() + "://" + getHost() + ":" + getPort() + "/"
-                    + getFedoraAppServerContext();
+            return getProtocol() + "://" + getHost() + ":" + getPort() + "/" + getFedoraAppServerContext();
         }
     }
 
