@@ -34,7 +34,7 @@ set JAVA="%JAVA_HOME%\bin\java"
 :gotJava
 
 REM set CP="%FEDORA_HOME%\client\bin;%FEDORA_HOME%\client\${fedora-client-jar};%FEDORA_HOME%\client\${cxf-bundle-jar}"
-set CP="%FEDORA_HOME%\client\bin;%FEDORA_HOME%\client\${fedora-client-jar};%FEDORA_HOME\client\app"
+set CP="%FEDORA_HOME%\client\bin;%FEDORA_HOME%\client\${fedora-client-jar};%FEDORA_HOME\client\app\*"
 set OPTS=-Djava.endorsed.dirs="%FEDORA_HOME%\client\lib"
 set OPTS=%OPTS% -Djavax.net.ssl.trustStore="%FEDORA_HOME%\client\truststore"
 set OPTS=%OPTS% -Djavax.net.ssl.trustStorePassword=tomcat
