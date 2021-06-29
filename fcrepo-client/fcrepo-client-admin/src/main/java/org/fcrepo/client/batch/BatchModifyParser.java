@@ -12,6 +12,7 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -147,44 +148,7 @@ implements Constants {
             SAXParserFactory saxfactory = SAXParserFactory.newInstance();
             SAXParser parser = saxfactory.newSAXParser();
             xmlReader = parser.getXMLReader();
-            xmlReader.setEntityResolver(new EntityResolver() {
-
-                @Override
-                public InputSource resolveEntity(String publicId,
-                        String systemId) throws SAXException, IOException {
-
-                    return new InputSource(load(new URL(systemId))
-                            .getInputStream());
-                }
-
-                private HttpURLConnection load(URL url) throws IOException {
-                    HttpURLConnection conn = (HttpURLConnection) url
-                            .openConnection();
-
-                    int status = conn.getResponseCode();
-                    if ((status != HttpURLConnection.HTTP_OK) &&
-                            (status == HttpURLConnection.HTTP_MOVED_TEMP ||
-                                    status == HttpURLConnection.HTTP_MOVED_PERM ||
-                                    status == HttpURLConnection.HTTP_SEE_OTHER)) {
-
-                        URL newUrl = new URL(conn.getHeaderField("Location"));
-
-                        if ((url.getProtocol() == "http" && newUrl
-                                .getProtocol() == "https") || url
-                                        .getProtocol() == newUrl
-                                                .getProtocol()) {
-                            return load(newUrl);
-                        } else {
-                            throw new IOException(
-                                    "Preventing redirection from " + url
-                                            .getProtocol() + " to " + newUrl
-                                                    .getProtocol());
-                        }
-                    }
-
-                    return conn;
-                }
-            });
+            xmlReader.setEntityResolver(new MapperResolver());
             xmlReader.setContentHandler(this);
             xmlReader
             .setFeature("http://xml.org/sax/features/namespaces", true);
@@ -1190,6 +1154,49 @@ implements Constants {
     @Deprecated
     public static Map<?,?> getDeploymentLabelMap(String sDefPID) throws IOException {
         throw new IOException("This operation uses obsolete field search semantics");
+    }
+
+    private static class MapperResolver implements EntityResolver {
+
+        private static Map<String, String> map = new HashMap<>();
+        static {
+            map.put("http://www.fedora-commons.org/definitions/1/0/api/batchModify-1.1.xsd",
+                    "https://duraspace.org/archive/fedora/definitions/1/0/api/batchModify-1.1.xsd");
+        }
+
+        @Override
+        public InputSource resolveEntity(String publicId, String systemId)
+                throws SAXException, IOException {
+            String id = map.containsKey(systemId) ? map.get(systemId)
+                    : systemId;
+
+            return new InputSource(load(new URL(id)).getInputStream());
+        }
+
+        private HttpURLConnection load(URL url) throws IOException {
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            int status = conn.getResponseCode();
+            if ((status != HttpURLConnection.HTTP_OK) &&
+                    (status == HttpURLConnection.HTTP_MOVED_TEMP ||
+                    status == HttpURLConnection.HTTP_MOVED_PERM ||
+                    status == HttpURLConnection.HTTP_SEE_OTHER)) {
+
+                URL newUrl = new URL(conn.getHeaderField("Location"));
+
+                // Allow redirect from http to https, or such that it maintains the same protocol.
+                if ((url.getProtocol() == "http" && newUrl
+                        .getProtocol() == "https") || url
+                        .getProtocol() == newUrl.getProtocol()) {
+                    return load(newUrl);
+                } else {
+                    throw new IOException("Preventing redirection from " + url
+                            .getProtocol() + " to " + newUrl.getProtocol());
+                }
+            }
+
+            return conn;
+        }
     }
 
 }
