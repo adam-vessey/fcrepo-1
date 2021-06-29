@@ -404,7 +404,8 @@
     <dependencySet>
       <useProjectArtifact>false</useProjectArtifact>
       <includes>
-        <include>org.apache.cxf:cxf-rt-rs-client:jar:*</include>
+<!--         <include>org.apache.cxf:cxf-rt-rs-client:jar:*</include> -->
+        <include>org.apache.cxf:cxf-rt-frontend-jaxws:jar:*</include>
       </includes>
       <outputDirectory>/client/app</outputDirectory>
       <useTransitiveFiltering>true</useTransitiveFiltering>
