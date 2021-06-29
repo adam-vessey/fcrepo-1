@@ -138,7 +138,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-frontend-jaxws</artifactId>
+      <artifactId>cxf-rt-rs-client</artifactId>
     </dependency>
     <dependency>
       <groupId>org.fcrepo</groupId>

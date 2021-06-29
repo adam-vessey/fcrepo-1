@@ -396,7 +396,7 @@
         <include>xerces:xercesImpl:jar:*</include>
         <include>xmlpull:xmlpull:jar:*</include>
         <include>xpp3:xpp3_min:jar:*</include>
-        <include>org.apache.cxf:cxf-rt-frontend-jaxws:jar:*</include>
+        <include>org.apache.cxf:cxf-rt-rs-client:jar:*</include>
       </includes>
       <outputDirectory>/client/lib</outputDirectory>
       <useTransitiveFiltering>true</useTransitiveFiltering>
