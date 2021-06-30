@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
  * @version $Id$
  */
 public class MethodParameterResolverServlet
-        extends HttpServlet {
+extends HttpServlet {
 
     private static final Logger logger =
             LoggerFactory.getLogger(MethodParameterResolverServlet.class);
@@ -82,7 +82,7 @@ public class MethodParameterResolverServlet
         String versDateTime = null;
         StringBuffer methodParms = new StringBuffer();
         response.setContentType(HTML_CONTENT_TYPE);
-        Hashtable<String,String> h_methodParms = new Hashtable<String,String>();
+        Hashtable<String,String> h_methodParms = new Hashtable<>();
 
         // Get parameters passed from web form.
         @SuppressWarnings("unchecked")
@@ -125,12 +125,12 @@ public class MethodParameterResolverServlet
             logger.error(message);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                               message);
+                    message);
         } else {
             // Translate web form parameters into dissemination request.
             StringBuffer redirectURL = new StringBuffer();
-            redirectURL.append(request.getContextPath() + "/get/" + PID + "/"
-                    + sDefPID + "/" + methodName);
+            redirectURL.append(request.getServletContext().getRealPath("/get/" +
+                    PID + "/" + sDefPID + "/" + methodName));
 
             // Add method parameters.
             int i = 0;
@@ -139,7 +139,7 @@ public class MethodParameterResolverServlet
                         URLEncoder.encode(e.nextElement(), "UTF-8");
                 String value =
                         URLEncoder.encode(h_methodParms.get(name),
-                                          "UTF-8");
+                                "UTF-8");
                 i++;
                 if (i == h_methodParms.size()) {
                     methodParms.append(name + "=" + value);
