@@ -196,7 +196,8 @@ extends FedoraServerTestCase {
         String location = "/getAccessParmResolver?PID=fedora-system:ContentModel-3.0&sDefPID=fedora-system:3&methodName=viewObjectProfile";
         HttpInputStream result = s_client.get(getBaseURL() + location, false, false);
         assertEquals(302, result.getStatusCode());
-        String expected = getBaseURL() + "/get/fedora-system:ContentModel-3.0/fedora-system:3/viewObjectProfile/";
+        String expected =
+                "/get/fedora-system:ContentModel-3.0/fedora-system:3/viewObjectProfile/";
         assertEquals(expected, result.getResponseHeader(HttpHeaders.LOCATION).getValue());
     }
 
