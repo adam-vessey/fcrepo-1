@@ -29,7 +29,6 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.fcrepo.common.Constants;
 import org.fcrepo.server.Context;
 import org.fcrepo.server.ReadOnlyContext;
@@ -48,6 +47,7 @@ import org.fcrepo.utilities.XmlTransformUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 /**
@@ -79,7 +79,7 @@ public class BaseRestResource {
     protected Access m_access;
     protected String m_hostname;
     protected ObjectMapper m_mapper;
-    
+
     protected DatastreamFilenameHelper m_datastreamFilenameHelper;
 
     @javax.ws.rs.core.Context
@@ -107,7 +107,7 @@ public class BaseRestResource {
 
     protected Context getContext() {
         return ReadOnlyContext.getContext(Constants.HTTP_REQUEST.REST.uri,
-                                          m_servletRequest);
+                m_servletRequest);
     }
 
     protected DefaultSerializer getSerializer(Context context) {
@@ -115,16 +115,16 @@ public class BaseRestResource {
     }
 
     protected void transform(String xml, String xslt, Writer out)
-    throws TransformerFactoryConfigurationError,
-           TransformerConfigurationException,
-           TransformerException {
+            throws TransformerFactoryConfigurationError,
+            TransformerConfigurationException,
+            TransformerException {
         transform(new StringReader(xml), xslt, out);
     }
-    
+
     protected void transform(Reader xml, String xslt, Writer out)
-                throws TransformerFactoryConfigurationError,
-                       TransformerConfigurationException,
-                       TransformerException {
+            throws TransformerFactoryConfigurationError,
+            TransformerConfigurationException,
+            TransformerException {
         File xslFile = new File(m_server.getHomeDir(), xslt);
 
         // XmlTransformUtility maintains a cache of Templates
@@ -188,12 +188,12 @@ public class BaseRestResource {
             return Response.status(Status.CONFLICT).entity(ex.getMessage()).type(MediaType.TEXT_PLAIN).build();
         } else if (ex instanceof ObjectValidityException){
             LOGGER.warn("Validation exception; unable to fulfill REST API request", ex);
-			if (((ObjectValidityException) ex).getValidation() != null) {
-				String errors = DefaultSerializer.objectValidationToXml(((ObjectValidityException) ex).getValidation());
-	            return Response.status(Status.BAD_REQUEST).entity(errors).type(MediaType.TEXT_XML).build();
-			} else {
-	            return Response.status(Status.BAD_REQUEST).entity(ex.getMessage()).type(MediaType.TEXT_PLAIN).build();
-			}
+            if (((ObjectValidityException) ex).getValidation() != null) {
+                String errors = DefaultSerializer.objectValidationToXml(((ObjectValidityException) ex).getValidation());
+                return Response.status(Status.BAD_REQUEST).entity(errors).type(MediaType.TEXT_XML).build();
+            } else {
+                return Response.status(Status.BAD_REQUEST).entity(ex.getMessage()).type(MediaType.TEXT_PLAIN).build();
+            }
 
         } else if (ex instanceof RangeNotSatisfiableException) {
             LOGGER.warn("Bad range request: " + ex.getMessage() + "; unable to fulfill REST API request", ex);
@@ -209,5 +209,5 @@ public class BaseRestResource {
         if (flash) error = Response.ok(error.getEntity()).build();
         return error;
     }
-    
+
 }
