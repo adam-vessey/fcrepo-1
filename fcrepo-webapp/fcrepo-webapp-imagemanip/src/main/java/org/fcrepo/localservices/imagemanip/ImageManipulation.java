@@ -347,7 +347,8 @@ extends HttpServlet {
             BufferedImage image = new BufferedImage(base_image.getWidth(null), base_image.getHeight(null),
                     BufferedImage.TYPE_INT_ARGB);
             Graphics2D bg = image.createGraphics();
-            bg.drawImage(base_image, 0, 0, null);
+            // XXX: Draw until we can draw no more. Given this servlet doesn't seem to see much use... should be fine?
+            while (!bg.drawImage(base_image, 0, 0, null));
             bg.dispose();
             ImageIO.write(image, format, out);
         }
