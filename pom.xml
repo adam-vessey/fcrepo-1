@@ -131,7 +131,7 @@
     <!--<powermock.version>[1.5.1,1.99999.99999)</powermock.version>-->
     <powermock.version>1.6.1</powermock.version>
     <httpcomponents.version>4.5.13</httpcomponents.version>
-    <httpcore.version>4.2.4</httpcore.version>
+    <httpcore.version>4.4.14</httpcore.version>
     <xacml.version>2.0.9.Final</xacml.version>
     <tomcat.version>7.0.109</tomcat.version>
     <mysql.version>8.0.16</mysql.version>
