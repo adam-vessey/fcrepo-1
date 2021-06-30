@@ -129,8 +129,9 @@ extends HttpServlet {
         } else {
             // Translate web form parameters into dissemination request.
             StringBuffer redirectURL = new StringBuffer();
-            redirectURL.append(request.getServletContext().getRealPath("/get/" +
-                    PID + "/" + sDefPID + "/" + methodName));
+            String route = "/get/" + PID + "/" + sDefPID + "/" + methodName;
+            redirectURL.append(request.getServletContext().getContext(route)
+                    .getRealPath("."));
 
             // Add method parameters.
             int i = 0;
