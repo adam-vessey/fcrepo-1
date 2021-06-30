@@ -52,8 +52,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -79,8 +77,6 @@ import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.params.CoreConnectionPNames;
 
 import ij.ImagePlus;
-import ij.io.FileInfo;
-import ij.io.GifEncoder;
 import ij.process.ImageProcessor;
 import ij.process.MedianCut;
 
@@ -321,17 +317,7 @@ extends HttpServlet {
                     new MedianCut((int[]) ip.getPixels(), ip.getWidth(), ip
                             .getHeight());
             ip = mc.convertToByte(256);
-            ImagePlus imp = new ImagePlus("temp", ip);
-            FileInfo fi = imp.getFileInfo();
-            byte pixels[] = (byte[]) imp.getProcessor().getPixels();
-            GifEncoder ge =
-                    new GifEncoder(fi.width,
-                            fi.height,
-                            pixels,
-                            fi.reds,
-                            fi.greens,
-                            fi.blues);
-            ge.write(out);
+            ImageIO.write(ip.getBufferedImage(), "GIF", out);
         } else {
             String format = null;
             if (outputMimeType.equals("image/jpeg")) {
@@ -343,14 +329,8 @@ extends HttpServlet {
             } else if (outputMimeType.equals("image/png")) {
                 format = "PNG";
             }
-            Image base_image = ip.createImage();
-            BufferedImage image = new BufferedImage(base_image.getWidth(null), base_image.getHeight(null),
-                    BufferedImage.TYPE_INT_ARGB);
-            Graphics2D bg = image.createGraphics();
-            // XXX: Draw until we can draw no more. Given this servlet doesn't seem to see much use... should be fine?
-            while (!bg.drawImage(base_image, 0, 0, null));
-            bg.dispose();
-            ImageIO.write(image, format, out);
+
+            ImageIO.write(ip.getBufferedImage(), format, out);
         }
     }
 

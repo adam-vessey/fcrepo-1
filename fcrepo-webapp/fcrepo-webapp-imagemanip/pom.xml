@@ -63,10 +63,15 @@
       <scope>provided</scope>
     </dependency>
   
+<!--     <dependency> -->
+<!--       <groupId>org.fcrepo</groupId> -->
+<!--       <artifactId>ij</artifactId> -->
+<!--       <version>1.32</version> -->
+<!--     </dependency> -->
     <dependency>
-      <groupId>org.fcrepo</groupId>
-      <artifactId>ij</artifactId>
-      <version>1.32</version>
+        <groupId>net.imagej</groupId>
+        <artifactId>ij</artifactId>
+        <version>1.53j</version>
     </dependency>
 
     <dependency>
