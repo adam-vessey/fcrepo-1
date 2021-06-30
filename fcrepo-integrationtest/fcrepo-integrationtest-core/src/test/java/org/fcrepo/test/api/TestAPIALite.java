@@ -210,7 +210,7 @@ extends FedoraServerTestCase {
         };
         runConcurrent(callables);
         assertEquals("image/gif",callables[0].lastType);
-        assertEquals(356909,callables[0].lastLength);
+        assertEquals(358846, callables[0].lastLength);
         assertEquals(callables[1].lastType,"image/jpeg");
         assertEquals(17109,callables[1].lastLength);
         assertEquals(callables[2].lastType,"text/xml;charset=UTF-8");
